@@ -1,11 +1,13 @@
-<!DOCTYPE html>
+
+
+                <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Mr. Tomato Kiosco - Sistema Profesional</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* AQUÍ VA TODO EL CSS DE LA PARTE 1 */* { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: 'Segoe UI', sans-serif; background: #F5F5F5; }
 .hidden { display: none !important; }
 
@@ -207,7 +209,71 @@ input:focus, select:focus { outline: none; border-color: #E53935; }
     .producto-card, .cart-item { flex-direction: column; text-align: center; }
     .tab { padding: 0.5rem; font-size: 0.75rem; }
     .dashboard-stats { grid-template-columns: 1fr; }
-}    <div class="container">
+}
+    </style>
+</head>
+<body>
+    <!-- PANTALLA LOGIN -->
+    <div id="loginScreen">
+        <div class="login-box">
+            <div style="text-align: center; margin-bottom: 1.5rem;">
+                <div style="font-size: 4rem;">🍅</div>
+                <h1 style="color: #E53935;">Mr. Tomato Kiosco</h1>
+                <p style="color: #757575;">Sistema Profesional</p>
+            </div>
+            <div style="background: #FFF3E0; padding: 1rem; border-radius: 12px; margin-bottom: 1rem;">
+                <label>📅 FECHA DE TRABAJO</label>
+                <input type="date" id="inputFecha" style="margin-top: 0.3rem;">
+            </div>
+            <div style="margin-bottom: 1rem;">
+                <label>👤 USUARIO</label>
+                <select id="loginUserSelect" style="margin-top: 0.3rem;">
+                    <option value="admin">Administrador</option>
+                    <option value="cajero1">Cajero 1</option>
+                    <option value="cajero2">Cajero 2</option>
+                </select>
+            </div>
+            <div style="margin-bottom: 1rem;">
+                <label>🔒 CONTRASEÑA</label>
+                <input type="password" id="loginPass" placeholder="••••" style="margin-top: 0.3rem;" onkeypress="if(event.key==='Enter') login()">
+            </div>
+            <button class="btn btn-primary" style="width: 100%; margin-bottom: 0.5rem;" onclick="login()">🔐 Ingresar</button>
+            <button class="btn btn-secondary" style="width: 100%;" onclick="verHistorialCierres()">📋 Historial de Cierres</button>
+        </div>
+    </div>
+
+    <!-- SISTEMA PRINCIPAL -->
+    <div id="sistemaScreen" class="hidden">
+        <div class="header">
+            <div class="header-content">
+                <div>
+                    <div style="font-size: 1.2rem; font-weight: bold;">🍅 Mr. Tomato Kiosco</div>
+                    <div style="font-size: 0.7rem;" id="headerFecha"></div>
+                    <div style="font-size: 0.7rem; opacity: 0.9;" id="headerUsuario"></div>
+                </div>
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                    <button class="btn" style="background: #4CAF50; padding: 0.4rem 0.8rem; font-size: 0.75rem;" onclick="exportarDatos()">📤 Backup</button>
+                    <button class="btn" style="background: #2196F3; padding: 0.4rem 0.8rem; font-size: 0.75rem;" onclick="imprimirTicket()">🖨️ Ticket</button>
+                    <button class="btn" style="background: #FF9800; padding: 0.4rem 0.8rem; font-size: 0.75rem;" onclick="abrirModalMayorista()">🏷️ Mayorista</button>
+                    <button class="btn" style="background: #9C27B0; padding: 0.4rem 0.8rem; font-size: 0.75rem;" onclick="configurarTicketOpcional()">⚙️ Config</button>
+                    <button class="btn" style="background: #FF9800; padding: 0.4rem 0.8rem; font-size: 0.75rem;" onclick="abrirCaja()">💰 Caja</button>
+                    <button class="btn" style="background: #9E9E9E; padding: 0.4rem 0.8rem; font-size: 0.75rem;" onclick="cerrarSesion()">🚪 Salir</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <div class="tabs-container">
+                <button class="tab active" onclick="switchTab('dashboard', this)">📊 DASHBOARD</button>
+                <button class="tab" onclick="switchTab('vender', this)">🛒 VENDER</button>
+                <button class="tab" onclick="switchTab('productos', this)">📦 PRODUCTOS</button>
+                <button class="tab" onclick="switchTab('historial', this)">📅 HISTORIAL</button>
+                <button class="tab" onclick="switchTab('reportes', this)">📄 REPORTES</button>
+                <button class="tab" onclick="switchTab('proveedores', this)">🏭 PROVEEDORES</button>
+                <button class="tab" onclick="switchTab('fiados', this)">📒 FIADOS</button>
+            </div>
+        </div>    <div class="container">
+        <!-- DASHBOARD -->
         <div class="page" id="dashboard">
             <div class="dashboard-stats" id="dashboardStats"></div>
             <div class="card">
@@ -220,6 +286,7 @@ input:focus, select:focus { outline: none; border-color: #E53935; }
             </div>
         </div>
 
+        <!-- VENDER -->
         <div class="page active" id="vender">
             <div class="card">
                 <h3>🔍 Buscar Producto</h3>
@@ -243,6 +310,7 @@ input:focus, select:focus { outline: none; border-color: #E53935; }
             </div>
         </div>
 
+        <!-- PRODUCTOS -->
         <div class="page" id="productos">
             <div class="card">
                 <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
@@ -256,6 +324,7 @@ input:focus, select:focus { outline: none; border-color: #E53935; }
             </div>
         </div>
 
+        <!-- HISTORIAL -->
         <div class="page" id="historial">
             <div class="card">
                 <h3>📅 Historial de Ventas</h3>
@@ -267,6 +336,7 @@ input:focus, select:focus { outline: none; border-color: #E53935; }
             </div>
         </div>
 
+        <!-- REPORTES -->
         <div class="page" id="reportes">
             <div class="card">
                 <h3>📄 Reportes</h3>
@@ -280,6 +350,7 @@ input:focus, select:focus { outline: none; border-color: #E53935; }
             </div>
         </div>
 
+        <!-- PROVEEDORES -->
         <div class="page" id="proveedores">
             <div class="card">
                 <div style="display: flex; justify-content: space-between;">
@@ -290,6 +361,7 @@ input:focus, select:focus { outline: none; border-color: #E53935; }
             </div>
         </div>
 
+        <!-- FIADOS -->
         <div class="page" id="fiados">
             <div class="card">
                 <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
@@ -302,6 +374,7 @@ input:focus, select:focus { outline: none; border-color: #E53935; }
     </div>
 </div>
 
+<!-- MODAL PRODUCTO -->
 <div class="modal" id="modalProducto">
     <div class="modal-content">
         <h3 id="modalProductoTitulo">➕ Agregar Producto</h3>
@@ -320,6 +393,7 @@ input:focus, select:focus { outline: none; border-color: #E53935; }
     </div>
 </div>
 
+<!-- MODAL COSTOS -->
 <div class="modal" id="modalCosto">
     <div class="modal-content">
         <h3>💰 Editar Costos</h3>
@@ -329,6 +403,7 @@ input:focus, select:focus { outline: none; border-color: #E53935; }
     </div>
 </div>
 
+<!-- MODAL PROVEEDOR -->
 <div class="modal" id="modalProveedor">
     <div class="modal-content">
         <h3>🏭 Agregar Proveedor</h3>
@@ -341,6 +416,7 @@ input:focus, select:focus { outline: none; border-color: #E53935; }
     </div>
 </div>
 
+<!-- MODAL CAJA -->
 <div class="modal" id="modalCaja">
     <div class="modal-content">
         <h3>💰 Apertura/Cierre de Caja</h3>
@@ -352,6 +428,7 @@ input:focus, select:focus { outline: none; border-color: #E53935; }
     </div>
 </div>
 
+<!-- MODAL MAYORISTA -->
 <div class="modal" id="modalMayorista">
     <div class="modal-content">
         <h3>🏷️ Precios Mayoristas</h3>
@@ -375,6 +452,7 @@ input:focus, select:focus { outline: none; border-color: #E53935; }
     </div>
 </div>
 
+<!-- MODAL DETALLE FIADO -->
 <div class="modal" id="modalDetalleFiado">
     <div class="modal-content">
         <h3>📒 Detalle de Fiado</h3>
@@ -383,6 +461,7 @@ input:focus, select:focus { outline: none; border-color: #E53935; }
     </div>
 </div>
 
+<!-- MODAL CONFIRMACIÓN VENTA -->
 <div class="modal" id="modalConfirmacion">
     <div class="modal-content">
         <h3>✅ Confirmar Venta</h3>
@@ -392,6 +471,7 @@ input:focus, select:focus { outline: none; border-color: #E53935; }
     </div>
 </div>
 
+<!-- SUCCESS OVERLAY -->
 <div class="success-overlay" id="successOverlay">
     <div class="success-icon">✅</div>
     <h2>¡VENTA EXITOSA!</h2>
@@ -835,7 +915,7 @@ function cerrarModalCosto() { document.getElementById('modalCosto').classList.re
             if (!productos.length) { document.getElementById('previsualizacionReporte').innerHTML = '<p>No hay productos</p>'; return; }
             const prods = productos.map(p => ({ nombre: p.nombre, tipo: p.tipo, venta: p.precio, costo: p.costo || 0, ganancia: p.precio - (p.costo || 0), margen: p.costo ? ((p.precio - p.costo) / p.costo * 100).toFixed(1) : 0, stock: p.stock, valorStock: p.stock * (p.costo || 0) })).sort((a,b) => b.ganancia - a.ganancia);
             const totalStock = prods.reduce((s, p) => s + p.valorStock, 0);
-            document.getElementById('previsualizacionReporte').innerHTML = `<h3>💰 Ganancias</h3><table border="1" cellpadding="5" style="width:100%"><tr style="background:#E53935;color:white;"><th>Producto</th><th>Venta</th><th>Costo</th><th>Ganancia</th><th>Margen</th><th>Stock</th><th>Valor</th></tr>${prods.map(p => `<tr><td>${p.nombre}</td><td>$${p.venta.toFixed(2)}</td><td>$${p.costo.toFixed(2)}</td><td>$${p.ganancia.toFixed(2)}</td><td>${p.margen}%</td><td>${p.stock.toFixed(2)}</td><td>$${p.valorStock.toFixed(2)}</td></tr>`).join('')}</table><p>💰 Inversión: $${totalStock.toFixed(2)}</p>`;
+            document.getElementById('previsualizacionReporte').innerHTML = `<h3>💰 Ganancias</h3><table border="1" cellpadding="5" style="width:100%"><tr style="background:#E53935;color:white;"><th>Producto</th><th>Venta</th><th>Costo</th><th>Ganancia</th><th>Margen</th><th>Stock</th><th>Valor</th>\x3C/tr>${prods.map(p => `<tr><td>${p.nombre}</td><td>$${p.venta.toFixed(2)}</td><td>$${p.costo.toFixed(2)}</td><td>$${p.ganancia.toFixed(2)}</td><td>${p.margen}%</td><td>${p.stock.toFixed(2)}</td><td>$${p.valorStock.toFixed(2)}</td></tr>`).join('')}</table><p>💰 Inversión: $${totalStock.toFixed(2)}</p>`;
             alert('✅ Reporte listo');
         }
 
@@ -857,67 +937,4 @@ function cerrarModalCosto() { document.getElementById('modalCosto').classList.re
         function cerrarModalCaja() { document.getElementById('modalCaja').classList.remove('active'); document.getElementById('inputMontoInicial').value = ''; }
 
         function configurarTicketOpcional() { const op = confirm('🖨️ TICKET\n"OK" = Automático\n"Cancelar" = Manual'); ticketAutomatico = !op; localStorage.setItem('ticket_automatico', ticketAutomatico); alert(ticketAutomatico ? '✅ Modo MANUAL' : '✅ Modo AUTOMÁTICO'); }
-        function imprimirTicket(v = null) { let ven = v; if (!ven) { if (!ventas.length) { alert('No hay venta'); return; } ven = ventas[ventas.l
-    </style>
-</head>
-<body>
-    <div id="loginScreen">
-        <div class="login-box">
-            <div style="text-align: center; margin-bottom: 1.5rem;">
-                <div style="font-size: 4rem;">🍅</div>
-                <h1 style="color: #E53935;">Mr. Tomato Kiosco</h1>
-                <p style="color: #757575;">Sistema Profesional</p>
-            </div>
-            <div style="background: #FFF3E0; padding: 1rem; border-radius: 12px; margin-bottom: 1rem;">
-                <label>📅 FECHA DE TRABAJO</label>
-                <input type="date" id="inputFecha" style="margin-top: 0.3rem;">
-            </div>
-            <div style="margin-bottom: 1rem;">
-                <label>👤 USUARIO</label>
-                <select id="loginUserSelect" style="margin-top: 0.3rem;">
-                    <option value="admin">Administrador</option>
-                    <option value="cajero1">Cajero 1</option>
-                    <option value="cajero2">Cajero 2</option>
-                </select>
-            </div>
-            <div style="margin-bottom: 1rem;">
-                <label>🔒 CONTRASEÑA</label>
-                <input type="password" id="loginPass" placeholder="••••" style="margin-top: 0.3rem;" onkeypress="if(event.key==='Enter') login()">
-            </div>
-            <button class="btn btn-primary" style="width: 100%; margin-bottom: 0.5rem;" onclick="login()">🔐 Ingresar</button>
-            <button class="btn btn-secondary" style="width: 100%;" onclick="verHistorialCierres()">📋 Historial de Cierres</button>
-        </div>
-    </div>
-
-    <div id="sistemaScreen" class="hidden">
-        <div class="header">
-            <div class="header-content">
-                <div>
-                    <div style="font-size: 1.2rem; font-weight: bold;">🍅 Mr. Tomato Kiosco</div>
-                    <div style="font-size: 0.7rem;" id="headerFecha"></div>
-                    <div style="font-size: 0.7rem; opacity: 0.9;" id="headerUsuario"></div>
-                </div>
-                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                    <button class="btn" style="background: #4CAF50; padding: 0.4rem 0.8rem; font-size: 0.75rem;" onclick="exportarDatos()">📤 Backup</button>
-                    <button class="btn" style="background: #2196F3; padding: 0.4rem 0.8rem; font-size: 0.75rem;" onclick="imprimirTicket()">🖨️ Ticket</button>
-                    <button class="btn" style="background: #FF9800; padding: 0.4rem 0.8rem; font-size: 0.75rem;" onclick="abrirModalMayorista()">🏷️ Mayorista</button>
-                    <button class="btn" style="background: #9C27B0; padding: 0.4rem 0.8rem; font-size: 0.75rem;" onclick="configurarTicketOpcional()">⚙️ Config</button>
-                    <button class="btn" style="background: #FF9800; padding: 0.4rem 0.8rem; font-size: 0.75rem;" onclick="abrirCaja()">💰 Caja</button>
-                    <button class="btn" style="background: #9E9E9E; padding: 0.4rem 0.8rem; font-size: 0.75rem;" onclick="cerrarSesion()">🚪 Salir</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="tabs">
-            <div class="tabs-container">
-                <button class="tab active" onclick="switchTab('dashboard', this)">📊 DASHBOARD</button>
-                <button class="tab" onclick="switchTab('vender', this)">🛒 VENDER</button>
-                <button class="tab" onclick="switchTab('productos', this)">📦 PRODUCTOS</button>
-                <button class="tab" onclick="switchTab('historial', this)">📅 HISTORIAL</button>
-                <button class="tab" onclick="switchTab('reportes', this)">📄 REPORTES</button>
-                <button class="tab" onclick="switchTab('proveedores', this)">🏭 PROVEEDORES</button>
-                <button class="tab" onclick="switchTab('fiados', this)">📒 FIADOS</button>
-            </div>
-        </div>
-  
- 
+        function imprimirTicket(v = null) { let ven = v; if (!ven) { if (!ventas.length) { alert('No hay venta'); return; } ven = ventas[venta

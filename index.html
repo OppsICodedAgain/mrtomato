@@ -513,3 +513,253 @@ input:focus, select:focus { outline: none; border-color: #E53935; }
         <button class="btn btn-secondary" onclick="document.getElementById('successOverlay').classList.remove('active')">Cerrar</button>
     </div>
 </div>
+    // ==================== VARIABLES GLOBALES ====================
+let productos = [];
+let ventas = [];
+let cierres = [];
+let proveedores = [];
+let preciosMayoristas = [];
+let clientesFiado = [];
+let promociones = [];
+let cajaActual = null;
+let carrito = [];
+let fechaTrabajo = '';
+let usuarioActual = '';
+let chartVentas = null;
+let ticketAutomatico = false;
+
+function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, function(m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
+
+function cargarDatosLocales() {
+    productos = JSON.parse(localStorage.getItem('productos_kiosco')) || [
+        { id: '1', nombre: 'Coca Cola 2.25L', precio: 2500, costo: 1800, stock: 12, tipo: 'unidad' },
+        { id: '2', nombre: 'Jamón Cocido', precio: 8500, costo: 6200, stock: 3.5, tipo: 'peso' },
+        { id: '3', nombre: 'Alimento Dog Chow', precio: 3000, costo: 2100, stock: 20, tipo: 'peso' }
+    ];
+    ventas = JSON.parse(localStorage.getItem('ventas_kiosco')) || [];
+    cierres = JSON.parse(localStorage.getItem('cierres_kiosco')) || [];
+    proveedores = JSON.parse(localStorage.getItem('proveedores_kiosco')) || [];
+    preciosMayoristas = JSON.parse(localStorage.getItem('precios_mayoristas')) || [];
+    clientesFiado = JSON.parse(localStorage.getItem('clientes_fiado')) || [];
+    promociones = JSON.parse(localStorage.getItem('promociones_kiosco')) || [];
+    cajaActual = JSON.parse(localStorage.getItem('caja_kiosco')) || null;
+    ticketAutomatico = localStorage.getItem('ticket_automatico') === 'true';
+}
+
+function guardarDatosLocales() {
+    localStorage.setItem('productos_kiosco', JSON.stringify(productos));
+    localStorage.setItem('ventas_kiosco', JSON.stringify(ventas));
+    localStorage.setItem('cierres_kiosco', JSON.stringify(cierres));
+    localStorage.setItem('proveedores_kiosco', JSON.stringify(proveedores));
+    localStorage.setItem('precios_mayoristas', JSON.stringify(preciosMayoristas));
+    localStorage.setItem('clientes_fiado', JSON.stringify(clientesFiado));
+    localStorage.setItem('promociones_kiosco', JSON.stringify(promociones));
+    localStorage.setItem('caja_kiosco', JSON.stringify(cajaActual));
+    localStorage.setItem('ticket_automatico', ticketAutomatico);
+}
+
+function login() {
+    const user = document.getElementById('loginUserSelect').value;
+    const pass = document.getElementById('loginPass').value;
+    fechaTrabajo = document.getElementById('inputFecha').value;
+    if (!fechaTrabajo) { alert('⚠️ Seleccione fecha'); return; }
+    const usuarios = { admin: '1910', cajero1: '1234', cajero2: '1234' };
+    if (usuarios[user] === pass) {
+        usuarioActual = user;
+        cargarDatosLocales();
+        document.getElementById('loginScreen').classList.add('hidden');
+        document.getElementById('sistemaScreen').classList.remove('hidden');
+        const fecha = new Date(fechaTrabajo + 'T00:00:00');
+        document.getElementById('headerFecha').textContent = fecha.toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+        document.getElementById('headerUsuario').textContent = `👤 ${user === 'admin' ? 'Admin' : user === 'cajero1' ? 'Cajero 1' : 'Cajero 2'}`;
+        renderProductosVenta();
+        renderListaProductos();
+        renderListaProveedores();
+        renderListaClientesFiado();
+        renderListaPromociones();
+        cargarFiltrosMes();
+        actualizarDashboard();
+        verificarStockBajo();
+        if (typeof renderListaPreciosMayoristas === 'function') renderListaPreciosMayoristas();
+    } else {
+        alert('❌ Usuario o contraseña incorrectos\nadmin/1910 | cajero1/1234 | cajero2/1234');
+        document.getElementById('loginPass').value = '';
+    }
+}
+
+function cerrarSesion() {
+    if (confirm('¿Cerrar sesión?')) {
+        carrito = [];
+        document.getElementById('sistemaScreen').classList.add('hidden');
+        document.getElementById('loginScreen').classList.remove('hidden');
+        document.getElementById('loginPass').value = '';
+        document.getElementById('inputFecha').value = new Date().toISOString().split('T')[0];
+    }
+}
+
+function verHistorialCierres() {
+    if (!cierres.length) { alert('📋 No hay cierres'); return; }
+    let msg = '📋 CIERRES\n\n';
+    cierres.slice().reverse().forEach(c => {
+        msg += `${new Date(c.fecha+'T00:00:00').toLocaleDateString('es-AR')}\nVentas: ${c.ventas} | Total: $${c.total.toFixed(2)}\n\n`;
+    });
+    alert(msg);
+}
+
+function switchTab(page, btn) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(page).classList.add('active');
+    if (page === 'productos') renderListaProductos();
+    if (page === 'historial') renderHistorialVentas();
+    if (page === 'proveedores') renderListaProveedores();
+    if (page === 'fiados') renderListaClientesFiado();
+    if (page === 'promos') renderListaPromociones();
+}
+
+function actualizarDashboard() {
+    const ventasHoy = ventas.filter(v => v.fechaTrabajo === fechaTrabajo && v.usuario === usuarioActual);
+    const totalHoy = ventasHoy.reduce((s, v) => s + (v.total || 0), 0);
+    const gananciaHoy = ventasHoy.reduce((s, v) => s + (v.gananciaTotal || 0), 0);
+    const ventasMes = ventas.filter(v => { const f = new Date(v.fecha); const a = new Date(); return f.getMonth() === a.getMonth() && f.getFullYear() === a.getFullYear(); });
+    const totalMes = ventasMes.reduce((s, v) => s + (v.total || 0), 0);
+    document.getElementById('dashboardStats').innerHTML = `
+        <div class="stat-card success"><div style="font-size:2rem;">$${totalHoy.toFixed(2)}</div><div>Ventas hoy</div></div>
+        <div class="stat-card"><div style="font-size:2rem;">$${gananciaHoy.toFixed(2)}</div><div>Ganancia hoy</div></div>
+        <div class="stat-card warning"><div style="font-size:2rem;">$${totalMes.toFixed(2)}</div><div>Ventas del mes</div></div>
+        <div class="stat-card danger"><div style="font-size:2rem;">${cajaActual ? `$${(cajaActual.montoActual || 0).toFixed(2)}` : 'Caja cerrada'}</div><div>Efectivo</div></div>`;
+    const ultimos7 = [];
+    for (let i = 6; i >= 0; i--) {
+        const fecha = new Date(); fecha.setDate(fecha.getDate() - i);
+        const total = ventas.filter(v => v.fechaTrabajo === fecha.toISOString().split('T')[0]).reduce((s, v) => s + (v.total || 0), 0);
+        ultimos7.push({ fecha: fecha.toLocaleDateString('es-AR', { weekday: 'short' }), total });
+    }
+    if (chartVentas) chartVentas.destroy();
+    const ctx = document.getElementById('ventasChart').getContext('2d');
+    chartVentas = new Chart(ctx, { type: 'bar', data: { labels: ultimos7.map(d => d.fecha), datasets: [{ label: 'Ventas', data: ultimos7.map(d => d.total), backgroundColor: '#E53935' }] }, options: { responsive: true } });
+}
+
+function verificarStockBajo() {
+    const bajos = productos.filter(p => p.stock < 5 && p.stock > 0);
+    const agotados = productos.filter(p => p.stock <= 0);
+    let html = '';
+    if (bajos.length) { html += `<div class="alert-stock">⚠️ STOCK BAJO:<br>`; bajos.forEach(p => { html += `• ${p.nombre}: ${p.stock.toFixed(2)} ${p.tipo === 'peso' ? 'kg' : 'und'}<br>`; }); html += `</div>`; }
+    if (agotados.length) { html += `<div class="alert-stock" style="border-left-color:#FF9800;">❌ SIN STOCK:<br>`; agotados.forEach(p => { html += `• ${p.nombre}<br>`; }); html += `</div>`; }
+    if (!bajos.length && !agotados.length) { html = '<p style="color:#43A047;">✅ Stock OK</p>'; }
+    document.getElementById('alertasStock').innerHTML = html;
+}// ==================== PRODUCTOS ====================
+function renderListaProductos() {
+    if (!productos.length) {
+        document.getElementById('listaProductos').innerHTML = '<p style="text-align:center;color:#999;padding:2rem;">📦 No hay productos</p>';
+        return;
+    }
+    document.getElementById('listaProductos').innerHTML = productos.map(p => {
+        let ganancia = (p.precio - (p.costo || 0)).toFixed(2);
+        let margen = p.costo ? ((p.precio - p.costo) / p.costo * 100).toFixed(1) : 0;
+        return `<div class="producto-card"><div><strong>${escapeHtml(p.nombre)}</strong><span class="badge ${p.tipo === 'peso' ? 'badge-peso' : 'badge-unidad'}">${p.tipo === 'peso' ? 'KG' : 'UND'}</span><br><small>Venta: $${p.precio.toFixed(2)}${p.tipo === 'peso' ? '/kg' : ''} | Costo: $${(p.costo || 0).toFixed(2)} | Ganancia: $${ganancia} (${margen}%)</small><br><small>Stock: ${p.stock.toFixed(2)}</small></div><div style="display:flex; gap:0.3rem;"><button class="btn btn-warning" onclick="editarProducto('${p.id}')" style="padding:0.3rem 0.8rem;">✏️</button><button class="btn btn-danger" onclick="eliminarProducto('${p.id}')" style="padding:0.3rem 0.8rem;">🗑️</button></div></div>`;
+    }).join('');
+}
+
+function editarProducto(id) {
+    const p = productos.find(x => x.id === id);
+    if (!p) { alert('❌ Producto no encontrado'); return; }
+    document.getElementById('modalProductoTitulo').textContent = '✏️ Editar';
+    document.getElementById('productoIdEdit').value = p.id;
+    document.getElementById('inputNombre').value = p.nombre;
+    document.getElementById('inputTipo').value = p.tipo;
+    document.getElementById('inputStock').value = p.stock;
+    if (p.tipo === 'peso') {
+        document.getElementById('precioUnidadDiv').style.display = 'none';
+        document.getElementById('precioKiloDiv').style.display = 'block';
+        document.getElementById('inputPrecioKilo').value = p.precio;
+    } else {
+        document.getElementById('precioUnidadDiv').style.display = 'block';
+        document.getElementById('precioKiloDiv').style.display = 'none';
+        document.getElementById('inputPrecio').value = p.precio;
+    }
+    document.getElementById('costoDiv').style.display = 'block';
+    document.getElementById('inputCosto').value = p.costo || 0;
+    document.getElementById('modalProducto').classList.add('active');
+}
+
+function guardarProducto() {
+    const id = document.getElementById('productoIdEdit').value;
+    const nombre = document.getElementById('inputNombre').value.trim();
+    const tipo = document.getElementById('inputTipo').value;
+    let precio = tipo === 'peso' ? parseFloat(document.getElementById('inputPrecioKilo').value) : parseFloat(document.getElementById('inputPrecio').value);
+    const stock = parseFloat(document.getElementById('inputStock').value);
+    const costo = parseFloat(document.getElementById('inputCosto').value) || 0;
+    if (!nombre) { alert('❌ Ingrese nombre'); return; }
+    if (isNaN(precio) || precio <= 0) { alert('❌ Precio inválido'); return; }
+    if (isNaN(stock) || stock < 0) { alert('❌ Stock inválido'); return; }
+    if (id) {
+        const idx = productos.findIndex(p => p.id === id);
+        if (idx !== -1) productos[idx] = { ...productos[idx], nombre, precio, stock, tipo, costo };
+    } else {
+        productos.push({ id: Date.now().toString(), nombre, precio, costo, stock, tipo });
+    }
+    guardarDatosLocales();
+    renderListaProductos();
+    renderProductosVenta();
+    verificarStockBajo();
+    cerrarModalProducto();
+    limpiarFormularioProducto();
+    alert('✅ Producto guardado');
+}
+
+function limpiarFormularioProducto() {
+    document.getElementById('modalProductoTitulo').textContent = '➕ Agregar';
+    document.getElementById('productoIdEdit').value = '';
+    document.getElementById('inputNombre').value = '';
+    document.getElementById('inputPrecio').value = '';
+    document.getElementById('inputPrecioKilo').value = '';
+    document.getElementById('inputStock').value = '';
+    document.getElementById('inputCosto').value = '';
+    document.getElementById('costoDiv').style.display = 'none';
+    document.getElementById('precioUnidadDiv').style.display = 'block';
+    document.getElementById('precioKiloDiv').style.display = 'none';
+}
+
+function eliminarProducto(id) {
+    if (!confirm('¿Eliminar?')) return;
+    productos = productos.filter(p => p.id !== id);
+    preciosMayoristas = preciosMayoristas.filter(pm => pm.productoId !== id);
+    promociones = promociones.filter(p => p.productoId !== id);
+    guardarDatosLocales();
+    renderListaProductos();
+    renderProductosVenta();
+    verificarStockBajo();
+    if (typeof renderListaPreciosMayoristas === 'function') renderListaPreciosMayoristas();
+    renderListaPromociones();
+    alert('✅ Producto eliminado');
+}
+
+function togglePrecioKilo() {
+    const tipo = document.getElementById('inputTipo').value;
+    document.getElementById('precioUnidadDiv').style.display = tipo === 'peso' ? 'none' : 'block';
+    document.getElementById('precioKiloDiv').style.display = tipo === 'peso' ? 'block' : 'none';
+}
+
+function abrirModalProducto() { limpiarFormularioProducto(); document.getElementById('modalProducto').classList.add('active'); }
+function cerrarModalProducto() { document.getElementById('modalProducto').classList.remove('active'); limpiarFormularioProducto(); }
+
+function abrirModalCosto() {
+    if (!productos.length) { alert('📦 No hay productos'); return; }
+    document.getElementById('listaCostosProductos').innerHTML = productos.map(p => `<div style="margin-bottom:1rem; padding:0.8rem; background:#F5F5F5; border-radius:8px;"><strong>${escapeHtml(p.nombre)}</strong><br><small>Venta: $${p.precio.toFixed(2)}${p.tipo === 'peso' ? '/kg' : ''}</small><input type="number" id="costo_${p.id}" value="${p.costo || 0}" step="0.01" placeholder="Costo" style="width:100%; margin-top:0.5rem;"></div>`).join('');
+    document.getElementById('modalCosto').classList.add('active');
+}
+
+function guardarCostos() {
+    let actualizados = 0;
+    productos.forEach(p => {
+        const input = document.getElementById(`costo_${p.id}`);
+        if (input) { const nuevo = parseFloat(input.value); if (!isNaN(nuevo) && nuevo >= 0) { p.costo = nuevo; actualizados++; } }
+    });
+    guardarDatosLocales();
+    renderListaProductos();
+    cerrarModalCosto();
+    alert(`✅ ${actualizados} productos actualizados`);
+}
+
+function cerrarModalCosto() { document.getElementById('modalCosto').classList.remove('active'); }

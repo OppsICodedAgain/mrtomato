@@ -513,6 +513,8 @@ input:focus, select:focus { outline: none; border-color: #E53935; }
         <button class="btn btn-secondary" onclick="document.getElementById('successOverlay').classList.remove('active')">Cerrar</button>
     </div>
 </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
     // ==================== VARIABLES GLOBALES ====================
 let productos = [];
 let ventas = [];
@@ -763,3 +765,349 @@ function guardarCostos() {
 }
 
 function cerrarModalCosto() { document.getElementById('modalCosto').classList.remove('active'); }
+    // ==================== VENTAS ====================
+function renderProductosVenta() {
+    const search = (document.getElementById('searchVenta').value || '').toLowerCase();
+    const filtrados = productos.filter(p => p.stock > 0 && p.nombre.toLowerCase().includes(search));
+    if (!filtrados.length) { document.getElementById('productosVenta').innerHTML = '<p style="text-align:center;color:#999;padding:2rem;">📭 Sin productos</p>'; return; }
+    document.getElementById('productosVenta').innerHTML = filtrados.map(p => `
+        <div class="producto-card" onclick="agregarAlCarrito('${p.id}')">
+            <div><strong>${escapeHtml(p.nombre)}</strong><span class="badge ${p.tipo === 'peso' ? 'badge-peso' : 'badge-unidad'}">${p.tipo === 'peso' ? 'KG' : 'UND'}</span><br><small>$${p.precio.toFixed(2)}${p.tipo === 'peso' ? '/kg' : ''} • Stock: ${p.stock.toFixed(2)}</small></div>
+            <button class="btn btn-primary" onclick="event.stopPropagation(); agregarAlCarrito('${p.id}')">+</button>
+        </div>
+    `).join('');
+}
+
+function calcularPrecioUnitarioEfectivo(producto, cantidad) {
+    const promosAplicables = promociones.filter(p => p.productoId === producto.id && cantidad >= p.cantidad).sort((a,b) => b.cantidad - a.cantidad);
+    if (promosAplicables.length) {
+        const mejorPromo = promosAplicables[0];
+        const bloques = Math.floor(cantidad / mejorPromo.cantidad);
+        const resto = cantidad % mejorPromo.cantidad;
+        const precioTotal = bloques * mejorPromo.precioTotal + resto * producto.precio;
+        return precioTotal / cantidad;
+    }
+    const mayorista = preciosMayoristas.find(pm => pm.productoId === producto.id);
+    if (mayorista && cantidad >= mayorista.cantidadMinima) {
+        return mayorista.precioMayorista;
+    }
+    return producto.precio;
+}
+
+function recalcCarrito() {
+    carrito.forEach(item => {
+        const precioUnitario = calcularPrecioUnitarioEfectivo(item, item.cantidad);
+        item.precioAplicado = precioUnitario;
+        item.subtotal = item.cantidad * precioUnitario;
+        item.gananciaItem = (precioUnitario - (item.costo || 0)) * item.cantidad;
+        item.esMayorista = preciosMayoristas.some(pm => pm.productoId === item.id && item.cantidad >= pm.cantidadMinima);
+        item.esPromo = promociones.some(p => p.productoId === item.id && item.cantidad >= p.cantidad);
+    });
+}
+
+function agregarAlCarrito(id) {
+    const p = productos.find(x => x.id === id);
+    if (!p) return;
+    if (p.tipo === 'peso') {
+        let kg = prompt(`${p.nombre}\n\n⚖️ KG\nStock: ${p.stock.toFixed(2)} kg\nPrecio: $${p.precio.toFixed(2)}/kg`, "1");
+        if (!kg) return;
+        kg = parseFloat(kg.replace(',', '.'));
+        if (isNaN(kg) || kg <= 0 || kg > p.stock) { alert('❌ Cantidad inválida'); return; }
+        const precioUnitario = calcularPrecioUnitarioEfectivo(p, kg);
+        const subtotal = precioUnitario * kg;
+        carrito.push({ ...p, cantidad: kg, subtotal, gananciaItem: (precioUnitario - (p.costo || 0)) * kg, precioAplicado: precioUnitario });
+    } else {
+        let cant = prompt(`${p.nombre}\n\n🔢 Unidades\nStock: ${p.stock}\nPrecio: $${p.precio}`, "1");
+        if (!cant) return;
+        cant = parseInt(cant);
+        if (isNaN(cant) || cant <= 0 || cant > p.stock) { alert('❌ Cantidad inválida'); return; }
+        const precioUnitario = calcularPrecioUnitarioEfectivo(p, cant);
+        const subtotal = precioUnitario * cant;
+        carrito.push({ ...p, cantidad: cant, subtotal, gananciaItem: (precioUnitario - (p.costo || 0)) * cant, precioAplicado: precioUnitario });
+    }
+    recalcCarrito();
+    renderCarrito();
+}
+
+function eliminarDelCarrito(i) { carrito.splice(i, 1); recalcCarrito(); renderCarrito(); }
+
+function renderCarrito() {
+    recalcCarrito();
+    if (!carrito.length) {
+        document.getElementById('carritoItems').innerHTML = '<p style="text-align:center;color:#999;padding:1rem;">Carrito vacío</p>';
+        document.getElementById('totalCarrito').textContent = '0.00';
+        return;
+    }
+    document.getElementById('carritoItems').innerHTML = carrito.map((item, i) => {
+        const precio = item.precioAplicado !== undefined ? item.precioAplicado : item.precio;
+        const mayoristaBadge = item.esMayorista ? '<span style="background:#FF9800;color:white;padding:0.2rem 0.4rem;border-radius:4px;font-size:0.6rem;">MAYORISTA</span>' : '';
+        const promoBadge = item.esPromo ? '<span style="background:#4CAF50;color:white;padding:0.2rem 0.4rem;border-radius:4px;font-size:0.6rem;">PROMO</span>' : '';
+        return `<div class="cart-item"><div><strong>${escapeHtml(item.nombre)}</strong> ${mayoristaBadge} ${promoBadge}<br><small>${item.cantidad.toFixed(2)} ${item.tipo === 'peso' ? 'kg' : 'und'} × $${precio.toFixed(2)} = <strong>$${item.subtotal.toFixed(2)}</strong></small></div><button class="btn btn-danger" onclick="eliminarDelCarrito(${i})" style="padding:0.3rem 0.8rem;">🗑️</button></div>`;
+    }).join('');
+    const total = carrito.reduce((s, i) => s + i.subtotal, 0);
+    document.getElementById('totalCarrito').textContent = total.toFixed(2);
+}
+
+function limpiarCarrito() { if (carrito.length && confirm('¿Limpiar carrito?')) { carrito = []; recalcCarrito(); renderCarrito(); document.getElementById('montoRecibido').value = ''; document.getElementById('vuelto').textContent = ''; } }
+function calcularVuelto() {
+    const total = carrito.reduce((s, i) => s + i.subtotal, 0);
+    const recibido = parseFloat(document.getElementById('montoRecibido').value);
+    if (!isNaN(recibido) && recibido >= total) document.getElementById('vuelto').textContent = `Vuelto: $${(recibido - total).toFixed(2)}`;
+    else document.getElementById('vuelto').textContent = '';
+}
+
+function confirmarVenta() {
+    if (!carrito.length) { alert('Carrito vacío'); return; }
+    const total = carrito.reduce((s, i) => s + i.subtotal, 0);
+    const formaPago = document.getElementById('formaPago').value;
+    
+    if (formaPago === 'fiado') {
+        const nombre = prompt('📒 Cliente:');
+        if (!nombre) return;
+        let cliente = clientesFiado.find(c => c.nombre.toLowerCase() === nombre.trim().toLowerCase());
+        if (!cliente) {
+            if (!confirm(`"${nombre}" no existe. ¿Crearlo?`)) return;
+            const tel = prompt('📞 Teléfono:');
+            const dir = prompt('📍 Dirección:');
+            const lim = parseFloat(prompt('💰 Límite mensual:', '50000'));
+            if (isNaN(lim) || lim <= 0) { alert('Límite inválido'); return; }
+            cliente = { id: Date.now().toString(), nombre: nombre.trim(), telefono: tel || '', direccion: dir || '', limiteMensual: lim, deudas: [] };
+            clientesFiado.push(cliente);
+            guardarClientesFiado();
+            renderListaClientesFiado();
+            alert(`✅ Cliente ${nombre} creado`);
+        }
+        const deuda = cliente.deudas.reduce((s, d) => s + (d.monto - (d.pagado || 0)), 0);
+        const disponible = cliente.limiteMensual - deuda;
+        if (total > disponible) {
+            alert(`❌ Cliente sin crédito. Límite: $${cliente.limiteMensual.toFixed(2)} | Deuda: $${deuda.toFixed(2)} | Disponible: $${disponible.toFixed(2)}`);
+            return;
+        }
+        cliente.deudas.push({ id: Date.now().toString(), fecha: new Date().toISOString(), monto: total, pagado: 0, fechaVencimiento: null, pagos: [], usuario: usuarioActual, items: JSON.parse(JSON.stringify(carrito)) });
+        guardarClientesFiado();
+        renderListaClientesFiado();
+        carrito = [];
+        renderCarrito();
+        renderProductosVenta();
+        alert(`✅ Venta a crédito: $${total.toFixed(2)} para ${cliente.nombre}`);
+        return;
+    }
+    
+    let resumen = '<h4>Resumen:</h4>';
+    carrito.forEach(i => {
+        const precio = i.precioAplicado !== undefined ? i.precioAplicado : i.precio;
+        resumen += `<p>${escapeHtml(i.nombre)} ${i.esMayorista ? '🏷️' : ''} ${i.esPromo ? '🎁' : ''}: ${i.cantidad.toFixed(2)} ${i.tipo === 'peso' ? 'kg' : 'und'} × $${precio.toFixed(2)} = $${i.subtotal.toFixed(2)}</p>`;
+    });
+    resumen += `<hr><p>Pago: ${formaPago === 'efectivo' ? 'Efectivo' : formaPago === 'tarjeta' ? 'Tarjeta' : 'Transferencia'}</p><h3>Total: $${total.toFixed(2)}</h3>`;
+    document.getElementById('resumenVenta').innerHTML = resumen;
+    document.getElementById('modalConfirmacion').classList.add('active');
+}
+
+function procesarVenta() {
+    if (!carrito.length) return;
+    const total = carrito.reduce((s, i) => s + i.subtotal, 0);
+    const ganancia = carrito.reduce((s, i) => s + i.gananciaItem, 0);
+    const formaPago = document.getElementById('formaPago').value;
+    const recibido = parseFloat(document.getElementById('montoRecibido').value);
+    const vuelto = !isNaN(recibido) && recibido >= total ? recibido - total : 0;
+    for (const item of carrito) { const p = productos.find(x => x.id === item.id); if (p) p.stock -= item.cantidad; }
+    ventas.push({ id: Date.now(), fecha: new Date().toISOString(), fechaTrabajo, usuario: usuarioActual, formaPago, items: JSON.parse(JSON.stringify(carrito)), total, gananciaTotal: ganancia, recibido, vuelto });
+    if (cajaActual && formaPago === 'efectivo') { cajaActual.montoActual = (cajaActual.montoActual || 0) + total; cajaActual.movimientos = cajaActual.movimientos || []; cajaActual.movimientos.push({ fecha: new Date().toISOString(), tipo: 'venta', monto: total }); }
+    guardarDatosLocales();
+    document.getElementById('successTotal').innerHTML = `Total: $${total.toFixed(2)}<br>${vuelto > 0 ? `Vuelto: $${vuelto.toFixed(2)}` : ''}`;
+    document.getElementById('successOverlay').classList.add('active');
+    carrito = []; renderCarrito(); renderProductosVenta(); renderListaProductos(); cargarFiltrosMes(); actualizarDashboard(); verificarStockBajo();
+    document.getElementById('montoRecibido').value = '';
+    if (ticketAutomatico) setTimeout(() => { if (ventas.length) imprimirTicket(ventas[ventas.length - 1]); }, 500);
+    cerrarModalConfirmacion();
+}
+function cerrarModalConfirmacion() { document.getElementById('modalConfirmacion').classList.remove('active'); }// ==================== MAYORISTA ====================
+function renderListaPreciosMayoristas() {
+    const c = document.getElementById('listaPreciosMayoristas');
+    if (!c) return;
+    if (!preciosMayoristas.length) { c.innerHTML = '<p>No hay precios mayoristas</p>'; return; }
+    c.innerHTML = preciosMayoristas.map((pm, idx) => {
+        const total = pm.precioMayorista * pm.cantidadMinima;
+        return `<div class="producto-card">
+            <div>
+                <strong>${pm.productoNombre}</strong><br>
+                <small>Normal: $${pm.precioNormal.toFixed(2)}${pm.tipo === 'peso' ? '/kg' : ''}</small><br>
+                <small>Mayorista: $${pm.precioMayorista.toFixed(2)}${pm.tipo === 'peso' ? '/kg' : ''} (mínimo ${pm.cantidadMinima} ${pm.tipo === 'peso' ? 'kg' : 'und'})</small><br>
+                <small>💰 Total mínimo: $${total.toFixed(2)}</small>
+            </div>
+            <button class="btn btn-danger" onclick="eliminarPrecioMayorista(${idx})">🗑️</button>
+        </div>`;
+    }).join('');
+}
+
+function abrirModalMayorista() {
+    const sel = document.getElementById('selectProductoMayorista');
+    const unidadInfo = document.getElementById('productoUnidadInfo');
+    const cantidadLabel = document.getElementById('cantidadMinimaLabel');
+    const precioLabel = document.getElementById('precioMayoristaLabel');
+    if (sel) {
+        sel.innerHTML = '<option value="">-- Seleccionar producto --</option>' + 
+            productos.map(p => `<option value="${p.id}" data-tipo="${p.tipo}">${p.nombre} ($${p.precio.toFixed(2)}${p.tipo === 'peso' ? '/kg' : ''})</option>`).join('');
+        sel.onchange = function() {
+            const selected = sel.options[sel.selectedIndex];
+            const tipo = selected?.dataset?.tipo;
+            if (tipo === 'peso') {
+                unidadInfo.innerText = '⚖️ Producto por peso: el precio mayorista será por kilogramo.';
+                cantidadLabel.innerText = '📊 Cantidad mínima (kg):';
+                precioLabel.innerText = '🏷️ Precio mayorista (por kg):';
+            } else {
+                unidadInfo.innerText = '📦 Producto por unidad: el precio mayorista será por unidad.';
+                cantidadLabel.innerText = '📊 Cantidad mínima (unidades):';
+                precioLabel.innerText = '🏷️ Precio mayorista (por unidad):';
+            }
+        };
+        sel.onchange();
+    }
+    renderListaPreciosMayoristas();
+    document.getElementById('modalMayorista').classList.add('active');
+}
+
+function agregarPrecioMayorista() {
+    const pid = document.getElementById('selectProductoMayorista').value;
+    const min = parseFloat(document.getElementById('inputCantidadMinima').value);
+    const precioM = parseFloat(document.getElementById('inputPrecioMayorista').value);
+    if (!pid) { alert('❌ Seleccione producto'); return; }
+    if (isNaN(min) || min <= 0) { alert('❌ Cantidad mínima inválida'); return; }
+    if (isNaN(precioM) || precioM <= 0) { alert('❌ Precio inválido'); return; }
+    const prod = productos.find(p => p.id === pid);
+    if (!prod) { alert('❌ Producto no encontrado'); return; }
+    if (precioM >= prod.precio) {
+        alert(`⚠️ El precio mayorista debe ser MENOR al precio normal.\n\nPrecio normal: $${prod.precio.toFixed(2)}${prod.tipo === 'peso' ? '/kg' : ''}\nPrecio mayorista ingresado: $${precioM.toFixed(2)}${prod.tipo === 'peso' ? '/kg' : ''}`);
+        return;
+    }
+    const totalMin = precioM * min;
+    if (confirm(`📊 Confirmar precio mayorista\n\nProducto: ${prod.nombre}\nCantidad mínima: ${min} ${prod.tipo === 'peso' ? 'kg' : 'unidades'}\nPrecio unitario: $${precioM.toFixed(2)}${prod.tipo === 'peso' ? '/kg' : ''}\nTotal para cantidad mínima: $${totalMin.toFixed(2)}\n\n¿Guardar?`)) {
+        const nuevo = { productoId: pid, productoNombre: prod.nombre, precioNormal: prod.precio, precioMayorista: precioM, cantidadMinima: min, tipo: prod.tipo };
+        const existe = preciosMayoristas.findIndex(p => p.productoId === pid);
+        if (existe !== -1) {
+            if (confirm('Este producto ya tiene precio mayorista. ¿Desea actualizarlo?')) preciosMayoristas[existe] = nuevo;
+            else return;
+        } else {
+            preciosMayoristas.push(nuevo);
+        }
+        guardarDatosLocales();
+        renderListaPreciosMayoristas();
+        document.getElementById('selectProductoMayorista').value = '';
+        document.getElementById('inputCantidadMinima').value = '';
+        document.getElementById('inputPrecioMayorista').value = '';
+        alert('✅ Precio mayorista guardado');
+    }
+}
+
+function eliminarPrecioMayorista(idx) { if (confirm('¿Eliminar?')) { preciosMayoristas.splice(idx, 1); guardarDatosLocales(); renderListaPreciosMayoristas(); } }
+function cerrarModalMayorista() { document.getElementById('modalMayorista').classList.remove('active'); }
+
+// ==================== FIADOS ====================
+function cargarClientesFiado() { clientesFiado = JSON.parse(localStorage.getItem('clientes_fiado')) || []; }
+function guardarClientesFiado() { localStorage.setItem('clientes_fiado', JSON.stringify(clientesFiado)); }
+
+function agregarClienteFiado() {
+    const nom = prompt('👤 Nombre:');
+    if (!nom) return;
+    if (clientesFiado.find(c => c.nombre.toLowerCase() === nom.trim().toLowerCase())) { alert('❌ Ya existe'); return; }
+    const tel = prompt('📞 Teléfono (opcional):');
+    const dir = prompt('📍 Dirección (opcional):');
+    const lim = parseFloat(prompt('💰 Límite mensual:', '50000'));
+    if (isNaN(lim) || lim <= 0) { alert('❌ Límite inválido'); return; }
+    clientesFiado.push({ id: Date.now().toString(), nombre: nom.trim(), telefono: tel || '', direccion: dir || '', limiteMensual: lim, deudas: [] });
+    guardarClientesFiado();
+    renderListaClientesFiado();
+    alert(`✅ Cliente ${nom} agregado`);
+}
+
+function renderListaClientesFiado() {
+    const c = document.getElementById('listaClientesFiado');
+    if (!c) return;
+    if (!clientesFiado.length) { c.innerHTML = '<p style="text-align:center;color:#999;padding:2rem;">📒 No hay clientes</p>'; return; }
+    c.innerHTML = clientesFiado.map(cl => {
+        const deuda = cl.deudas.reduce((s, d) => s + (d.monto - (d.pagado || 0)), 0);
+        const restante = cl.limiteMensual - deuda;
+        const pct = (deuda / cl.limiteMensual) * 100;
+        return `<div class="producto-card" style="flex-direction:column;"><div style="width:100%;display:flex;justify-content:space-between;"><strong>👤 ${escapeHtml(cl.nombre)}</strong><span class="badge ${deuda > cl.limiteMensual * 0.8 ? 'badge-peso' : 'badge-unidad'}">Límite: $${cl.limiteMensual.toFixed(2)}</span></div><div style="width:100%;font-size:0.8rem;">📞 ${cl.telefono || '-'} | 📍 ${cl.direccion || '-'}</div><div style="width:100%;font-size:0.8rem;color:${deuda > 0 ? '#E53935' : '#43A047'};">💰 Deuda: $${deuda.toFixed(2)} | Restante: $${restante.toFixed(2)} | ${pct.toFixed(0)}%</div><div style="margin-top:0.5rem;display:flex;gap:0.3rem;"><button class="btn btn-primary" onclick="verDetalleFiado('${cl.id}')" style="padding:0.3rem 0.8rem;">📋</button><button class="btn btn-success" onclick="registrarPagoFiado('${cl.id}')" style="padding:0.3rem 0.8rem;">💰</button><button class="btn btn-warning" onclick="agregarDeudaFiado('${cl.id}')" style="padding:0.3rem 0.8rem;">➕</button><button class="btn btn-danger" onclick="eliminarClienteFiado('${cl.id}')" style="padding:0.3rem 0.8rem;">🗑️</button></div></div>`;
+    }).join('');
+}
+
+function verDetalleFiado(id) {
+    const cl = clientesFiado.find(c => c.id === id);
+    if (!cl) return;
+    const deuda = cl.deudas.reduce((s, d) => s + (d.monto - (d.pagado || 0)), 0);
+    let html = `<h4>📒 ${escapeHtml(cl.nombre)}</h4><p>📞 ${cl.telefono || '-'} | 📍 ${cl.direccion || '-'}</p><p>💰 Límite: $${cl.limiteMensual.toFixed(2)} | 💸 Deuda: $${deuda.toFixed(2)}</p><hr><h5>Deudas:</h5>`;
+    const pendientes = cl.deudas.filter(d => (d.monto - (d.pagado || 0)) > 0);
+    if (!pendientes.length) html += '<p>✅ Sin deudas</p>';
+    else {
+        html += `<table style="width:100%"><tr style="background:#E53935;color:white;"><th>Fecha</th><th>Monto</th><th>Pagado</th><th>Saldo</th>     </tr>`;
+        pendientes.forEach(d => {
+            const saldo = d.monto - (d.pagado || 0);
+            html += `     <tr><td>${new Date(d.fecha).toLocaleDateString()}</td><td>$${d.monto.toFixed(2)}</td><td>$${(d.pagado || 0).toFixed(2)}</td><td style="color:#E53935;">$${saldo.toFixed(2)}</td></tr>`;
+        });
+        html += `</table>`;
+    }
+    html += `<hr><h5>Pagos:</h5>`;
+    const pagos = cl.deudas.flatMap(d => d.pagos || []);
+    if (!pagos.length) html += '<p>Sin pagos</p>';
+    else {
+        html += `<ul>`;
+        pagos.slice().reverse().forEach(p => {
+            html += `<li>${new Date(p.fecha).toLocaleDateString()} - Pagó $${p.monto.toFixed(2)} (${p.usuario})</li>`;
+        });
+        html += `</ul>`;
+    }
+    document.getElementById('detalleFiadoContent').innerHTML = html;
+    document.getElementById('modalDetalleFiado').classList.add('active');
+}
+
+function registrarPagoFiado(id) {
+    const cl = clientesFiado.find(c => c.id === id);
+    if (!cl) return;
+    const totalDeuda = cl.deudas.reduce((s, d) => s + (d.monto - (d.pagado || 0)), 0);
+    if (totalDeuda <= 0) { alert('✅ Sin deudas'); return; }
+    const monto = parseFloat(prompt(`💰 PAGO\nCliente: ${cl.nombre}\nDeuda: $${totalDeuda.toFixed(2)}\n¿Cuánto paga?`, totalDeuda.toFixed(2)));
+    if (isNaN(monto) || monto <= 0) { alert('❌ Monto inválido'); return; }
+    if (monto > totalDeuda) { alert(`❌ Máximo $${totalDeuda.toFixed(2)}`); return; }
+    let resto = monto;
+    for (const d of cl.deudas) {
+        if (resto <= 0) break;
+        const saldo = d.monto - (d.pagado || 0);
+        if (saldo > 0) {
+            const aplicado = Math.min(resto, saldo);
+            d.pagado = (d.pagado || 0) + aplicado;
+            d.pagos = d.pagos || [];
+            d.pagos.push({ fecha: new Date().toISOString(), monto: aplicado, usuario: usuarioActual });
+            resto -= aplicado;
+        }
+    }
+    guardarClientesFiado();
+    renderListaClientesFiado();
+    alert(`✅ Pago de $${monto.toFixed(2)} registrado`);
+}
+
+function agregarDeudaFiado(id) {
+    const cl = clientesFiado.find(c => c.id === id);
+    if (!cl) return;
+    const deudaActual = cl.deudas.reduce((s, d) => s + (d.monto - (d.pagado || 0)), 0);
+    const disponible = cl.limiteMensual - deudaActual;
+    if (disponible <= 0) { alert(`❌ Límite alcanzado`); return; }
+    const monto = parseFloat(prompt(`📒 NUEVO FIADO\nCliente: ${cl.nombre}\nDisponible: $${disponible.toFixed(2)}\nMonto:`));
+    if (isNaN(monto) || monto <= 0) { alert('❌ Monto inválido'); return; }
+    if (monto > disponible) { alert(`❌ Supera límite ($${disponible.toFixed(2)})`); return; }
+    cl.deudas.push({ id: Date.now().toString(), fecha: new Date().toISOString(), monto, pagado: 0, fechaVencimiento: null, pagos: [], usuario: usuarioActual });
+    guardarClientesFiado();
+    renderListaClientesFiado();
+    alert(`✅ Fiado de $${monto.toFixed(2)} agregado`);
+}
+
+function eliminarClienteFiado(id) {
+    if (confirm('¿Eliminar cliente y todo su historial?')) {
+        clientesFiado = clientesFiado.filter(c => c.id !== id);
+        guardarClientesFiado();
+        renderListaClientesFiado();
+        alert('✅ Cliente eliminado');
+    }
+}
+
+function cerrarModalDetalleFiado() { document.getElementById('modalDetalleFiado').classList.remove('active'); }

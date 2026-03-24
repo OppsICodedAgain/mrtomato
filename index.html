@@ -1,13 +1,5 @@
-
-
-                <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Mr. Tomato Kiosco - Sistema Profesional</title>
-    <style>
-        /* AQUÍ VA TODO EL CSS DE LA PARTE 1 */* { margin: 0; padding: 0; box-sizing: border-box; }
+ /* ==================== CSS COMPLETO ==================== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: 'Segoe UI', sans-serif; background: #F5F5F5; }
 .hidden { display: none !important; }
 
@@ -210,6 +202,14 @@ input:focus, select:focus { outline: none; border-color: #E53935; }
     .tab { padding: 0.5rem; font-size: 0.75rem; }
     .dashboard-stats { grid-template-columns: 1fr; }
 }
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Mr. Tomato Kiosco - Sistema Profesional</title>
+    <style>
+        /* ========== AQUÍ VA TODO EL CSS DE LA PARTE 1 ========== */
     </style>
 </head>
 <body>
@@ -372,9 +372,7 @@ input:focus, select:focus { outline: none; border-color: #E53935; }
             </div>
         </div>
     </div>
-</div>
-
-<!-- MODAL PRODUCTO -->
+</div><!-- MODAL PRODUCTO -->
 <div class="modal" id="modalProducto">
     <div class="modal-content">
         <h3 id="modalProductoTitulo">➕ Agregar Producto</h3>
@@ -483,7 +481,8 @@ input:focus, select:focus { outline: none; border-color: #E53935; }
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>let productos = [];
+<script>// ==================== VARIABLES GLOBALES ====================
+let productos = [];
 let ventas = [];
 let cierres = [];
 let proveedores = [];
@@ -496,8 +495,10 @@ let usuarioActual = '';
 let chartVentas = null;
 let ticketAutomatico = false;
 
+// ==================== UTILIDADES ====================
 function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, function(m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
 
+// ==================== DATOS LOCALES ====================
 function cargarDatosLocales() {
     productos = JSON.parse(localStorage.getItem('productos_kiosco')) || [
         { id: '1', nombre: 'Coca Cola 2.25L', precio: 2500, costo: 1800, stock: 12, tipo: 'unidad' },
@@ -536,6 +537,7 @@ function exportarDatos() {
     alert('✅ Backup exportado');
 }
 
+// ==================== LOGIN ====================
 function login() {
     const user = document.getElementById('loginUserSelect').value;
     const pass = document.getElementById('loginPass').value;
@@ -594,6 +596,7 @@ function switchTab(page, btn) {
     if (page === 'fiados') renderListaClientesFiado();
 }
 
+// ==================== DASHBOARD ====================
 function actualizarDashboard() {
     const ventasHoy = ventas.filter(v => v.fechaTrabajo === fechaTrabajo && v.usuario === usuarioActual);
     const totalHoy = ventasHoy.reduce((s, v) => s + (v.total || 0), 0);
@@ -626,6 +629,7 @@ function verificarStockBajo() {
     document.getElementById('alertasStock').innerHTML = html;
 }
 
+// ==================== PRODUCTOS ====================
 function renderListaProductos() {
     if (!productos.length) {
         document.getElementById('listaProductos').innerHTML = '<p style="text-align:center;color:#999;padding:2rem;">📦 No hay productos</p>';
@@ -737,7 +741,8 @@ function guardarCostos() {
     alert(`✅ ${actualizados} productos actualizados`);
 }
 
-function cerrarModalCosto() { document.getElementById('modalCosto').classList.remove('active'); }        function renderProductosVenta() {
+function cerrarModalCosto() { document.getElementById('modalCosto').classList.remove('active'); }        // ==================== VENTAS ====================
+        function renderProductosVenta() {
             const search = (document.getElementById('searchVenta').value || '').toLowerCase();
             const filtrados = productos.filter(p => p.stock > 0 && p.nombre.toLowerCase().includes(search));
             if (!filtrados.length) { document.getElementById('productosVenta').innerHTML = '<p style="text-align:center;color:#999;padding:2rem;">📭 Sin productos</p>'; return; }
@@ -874,6 +879,7 @@ function cerrarModalCosto() { document.getElementById('modalCosto').classList.re
 
         function cerrarModalConfirmacion() { document.getElementById('modalConfirmacion').classList.remove('active'); }
 
+        // ==================== HISTORIAL ====================
         function cargarFiltrosMes() {
             const meses = new Set();
             ventas.forEach(v => { if (v?.fecha) { const f = new Date(v.fecha); if (!isNaN(f.getTime())) meses.add(`${f.getFullYear()}-${String(f.getMonth() + 1).padStart(2, '0')}`); } });
@@ -897,6 +903,7 @@ function cerrarModalCosto() { document.getElementById('modalCosto').classList.re
             cont.innerHTML = `<div style="background:#E8F5E9;padding:0.8rem;border-radius:8px;margin-bottom:1rem;"><strong>💰 Total: $${total.toFixed(2)}</strong><br><strong>📈 Ganancia: $${gan.toFixed(2)}</strong><br><small>${filt.length} ventas</small></div>` + filt.map(v => `<div style="background:#F5F5F5;padding:0.8rem;border-radius:8px;margin-bottom:0.5rem;"><div style="display:flex;justify-content:space-between;"><div><strong>📅 ${new Date(v.fecha).toLocaleString()}</strong><br><small>👤 ${v.usuario === 'admin' ? 'Admin' : v.usuario === 'cajero1' ? 'Cajero 1' : 'Cajero 2'} | 💳 ${v.formaPago === 'efectivo' ? 'Efectivo' : v.formaPago === 'tarjeta' ? 'Tarjeta' : 'Transferencia'}</small></div><div><strong style="color:#E53935;">$${(v.total || 0).toFixed(2)}</strong><br><small style="color:#43A047;">Ganancia: $${(v.gananciaTotal || 0).toFixed(2)}</small></div></div><div style="margin-top:0.5rem;font-size:0.8rem;">${(v.items || []).map(i => `📦 ${i.nombre}${i.esMayorista ? '🏷️' : ''}: ${(i.cantidad || 0).toFixed(2)} ${i.tipo === 'peso' ? 'kg' : 'und'} = $${(i.subtotal || 0).toFixed(2)}`).join(' • ')}</div></div>`).join('');
         }
 
+        // ==================== REPORTES ====================
         function generarReportePDF(tipo) {
             let titulo, datos;
             const hoy = new Date();
@@ -915,10 +922,11 @@ function cerrarModalCosto() { document.getElementById('modalCosto').classList.re
             if (!productos.length) { document.getElementById('previsualizacionReporte').innerHTML = '<p>No hay productos</p>'; return; }
             const prods = productos.map(p => ({ nombre: p.nombre, tipo: p.tipo, venta: p.precio, costo: p.costo || 0, ganancia: p.precio - (p.costo || 0), margen: p.costo ? ((p.precio - p.costo) / p.costo * 100).toFixed(1) : 0, stock: p.stock, valorStock: p.stock * (p.costo || 0) })).sort((a,b) => b.ganancia - a.ganancia);
             const totalStock = prods.reduce((s, p) => s + p.valorStock, 0);
-            document.getElementById('previsualizacionReporte').innerHTML = `<h3>💰 Ganancias</h3><table border="1" cellpadding="5" style="width:100%"><tr style="background:#E53935;color:white;"><th>Producto</th><th>Venta</th><th>Costo</th><th>Ganancia</th><th>Margen</th><th>Stock</th><th>Valor</th>\x3C/tr>${prods.map(p => `<tr><td>${p.nombre}</td><td>$${p.venta.toFixed(2)}</td><td>$${p.costo.toFixed(2)}</td><td>$${p.ganancia.toFixed(2)}</td><td>${p.margen}%</td><td>${p.stock.toFixed(2)}</td><td>$${p.valorStock.toFixed(2)}</td></tr>`).join('')}</table><p>💰 Inversión: $${totalStock.toFixed(2)}</p>`;
+            document.getElementById('previsualizacionReporte').innerHTML = `<h3>💰 Ganancias</h3><table border="1" cellpadding="5" style="width:100%"><tr style="background:#E53935;color:white;"><th>Producto</th><th>Venta</th><th>Costo</th><th>Ganancia</th><th>Margen</th><th>Stock</th><th>Valor</th></tr>${prods.map(p => `tr><td>${p.nombre}</td><td>$${p.venta.toFixed(2)}</td><td>$${p.costo.toFixed(2)}</td><td>$${p.ganancia.toFixed(2)}</td><td>${p.margen}%</td><td>${p.stock.toFixed(2)}</td><td>$${p.valorStock.toFixed(2)}</td></tr>`).join('')}</table><p>💰 Inversión: $${totalStock.toFixed(2)}</p>`;
             alert('✅ Reporte listo');
         }
 
+        // ==================== PROVEEDORES ====================
         function renderListaProveedores() {
             const c = document.getElementById('listaProveedores');
             if (!c) return;
@@ -931,10 +939,11 @@ function cerrarModalCosto() { document.getElementById('modalCosto').classList.re
         function abrirModalProveedor() { document.getElementById('modalProveedor').classList.add('active'); }
         function cerrarModalProveedor() { document.getElementById('modalProveedor').classList.remove('active'); }
 
+        // ==================== CAJA ====================
         function abrirCaja() { document.getElementById('infoCaja').innerHTML = cajaActual ? `✅ Caja ABIERTA<br>📅 ${new Date(cajaActual.apertura).toLocaleString()}<br>💰 Inicial: $${(cajaActual.montoInicial || 0).toFixed(2)}<br>💵 Actual: $${(cajaActual.montoActual || 0).toFixed(2)}` : '🔴 Caja CERRADA'; document.getElementById('modalCaja').classList.add('active'); }
         function aperturarCaja() { const m = parseFloat(document.getElementById('inputMontoInicial').value); if (isNaN(m) || m < 0) { alert('❌ Monto inválido'); return; } cajaActual = { apertura: new Date().toISOString(), montoInicial: m, montoActual: m, movimientos: [] }; guardarDatosLocales(); alert(`✅ Caja abierta con $${m.toFixed(2)}`); cerrarModalCaja(); actualizarDashboard(); }
         function cerrarCaja() { if (!cajaActual) { alert('No hay caja'); return; } const ventasEf = ventas.filter(v => v && v.fechaTrabajo === fechaTrabajo && v.formaPago === 'efectivo'); const totalEf = ventasEf.reduce((s, v) => s + (v.total || 0), 0); const esp = (cajaActual.montoInicial || 0) + totalEf; if (confirm(`💰 CIERRE\nInicial: $${(cajaActual.montoInicial || 0).toFixed(2)}\nVentas efectivo: $${totalEf.toFixed(2)}\nEsperado: $${esp.toFixed(2)}\nActual: $${(cajaActual.montoActual || 0).toFixed(2)}\nDiferencia: $${((cajaActual.montoActual || 0) - esp).toFixed(2)}\n¿Cerrar?`)) { cierres.push({ fecha: fechaTrabajo, usuario: usuarioActual, ventas: ventasEf.length, total: totalEf }); cajaActual = null; guardarDatosLocales(); alert('✅ Caja cerrada'); cerrarModalCaja(); actualizarDashboard(); } }
         function cerrarModalCaja() { document.getElementById('modalCaja').classList.remove('active'); document.getElementById('inputMontoInicial').value = ''; }
 
-        function configurarTicketOpcional() { const op = confirm('🖨️ TICKET\n"OK" = Automático\n"Cancelar" = Manual'); ticketAutomatico = !op; localStorage.setItem('ticket_automatico', ticketAutomatico); alert(ticketAutomatico ? '✅ Modo MANUAL' : '✅ Modo AUTOMÁTICO'); }
-        function imprimirTicket(v = null) { let ven = v; if (!ven) { if (!ventas.length) { alert('No hay venta'); return; } ven = ventas[venta
+        // ==================== TICKET ====================
+        function configurarTicketOpcional() { cons

@@ -1,6 +1,3 @@
- 
-    background: #FFEBEE;
-    
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -8,210 +5,209 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Mr. Tomato Kiosco - Sistema Profesional</title>
     <style>
-      /* ==================== CSS COMPLETO ==================== */
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Segoe UI', sans-serif; background: #F5F5F5; }
-.hidden { display: none !important; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #F5F5F5; }
+        .hidden { display: none !important; }
 
-#loginScreen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #E53935 0%, #C62828 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 99999;
-    padding: 1rem;
-}
+        #loginScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #E53935 0%, #C62828 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            padding: 1rem;
+        }
 
-.login-box {
-    background: white;
-    padding: 2rem;
-    border-radius: 20px;
-    max-width: 450px;
-    width: 100%;
-}
+        .login-box {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            max-width: 450px;
+            width: 100%;
+        }
 
-.btn {
-    padding: 0.8rem 1.2rem;
-    border: none;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-.btn:hover { transform: translateY(-2px); }
-.btn-primary { background: #E53935; color: white; }
-.btn-success { background: #43A047; color: white; }
-.btn-secondary { background: #9E9E9E; color: white; }
-.btn-warning { background: #FF9800; color: white; }
-.btn-danger { background: #D32F2F; color: white; }
+        .btn {
+            padding: 0.8rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn:hover { transform: translateY(-2px); }
+        .btn-primary { background: #E53935; color: white; }
+        .btn-success { background: #43A047; color: white; }
+        .btn-secondary { background: #9E9E9E; color: white; }
+        .btn-warning { background: #FF9800; color: white; }
+        .btn-danger { background: #D32F2F; color: white; }
 
-input, select {
-    width: 100%;
-    padding: 0.8rem;
-    border: 2px solid #E0E0E0;
-    border-radius: 8px;
-    font-size: 0.9rem;
-}
-input:focus, select:focus { outline: none; border-color: #E53935; }
+        input, select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #E0E0E0;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+        input:focus, select:focus { outline: none; border-color: #E53935; }
 
-.header {
-    background: linear-gradient(135deg, #E53935 0%, #C62828 100%);
-    color: white;
-    padding: 0.8rem 1rem;
-}
-.header-content {
-    max-width: 1400px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-}
+        .header {
+            background: linear-gradient(135deg, #E53935 0%, #C62828 100%);
+            color: white;
+            padding: 0.8rem 1rem;
+        }
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
 
-.tabs {
-    background: white;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-}
-.tabs-container {
-    max-width: 1400px;
-    margin: 0 auto;
-    display: flex;
-    gap: 0.2rem;
-    padding: 0 0.5rem;
-    flex-wrap: wrap;
-}
-.tab {
-    padding: 0.7rem 1rem;
-    background: none;
-    border: none;
-    border-bottom: 3px solid transparent;
-    cursor: pointer;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #9E9E9E;
-}
-.tab.active {
-    color: #E53935;
-    border-bottom-color: #E53935;
-    background: #F5F5F5;
-}
+        .tabs {
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .tabs-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            gap: 0.2rem;
+            padding: 0 0.5rem;
+            flex-wrap: wrap;
+        }
+        .tab {
+            padding: 0.7rem 1rem;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #9E9E9E;
+        }
+        .tab.active {
+            color: #E53935;
+            border-bottom-color: #E53935;
+            background: #F5F5F5;
+        }
 
-.container { max-width: 1400px; margin: 0 auto; padding: 1rem; }
-.page { display: none; }
-.page.active { display: block; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 1rem; }
+        .page { display: none; }
+        .page.active { display: block; }
 
-.card {
-    background: white;
-    padding: 1rem;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    margin-bottom: 1rem;
-}
+        .card {
+            background: white;
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 1rem;
+        }
 
-.producto-card, .cart-item {
-    background: #F5F5F5;
-    padding: 0.8rem;
-    border-radius: 10px;
-    margin-bottom: 0.5rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    cursor: pointer;
-}
-.producto-card:hover { background: #EEEEEE; }
+        .producto-card, .cart-item {
+            background: #F5F5F5;
+            padding: 0.8rem;
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+        .producto-card:hover { background: #EEEEEE; }
 
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.6);
-    z-index: 100000;
-    align-items: center;
-    justify-content: center;
-}
-.modal.active { display: flex; }
-.modal-content {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 15px;
-    max-width: 550px;
-    width: 90%;
-    max-height: 80vh;
-    overflow-y: auto;
-}
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 100000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            max-width: 550px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
 
-.success-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(67, 160, 71, 0.95);
-    z-index: 200000;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-}
-.success-overlay.active { display: flex; }
+        .success-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(67, 160, 71, 0.95);
+            z-index: 200000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .success-overlay.active { display: flex; }
 
-.badge {
-    display: inline-block;
-    padding: 0.2rem 0.5rem;
-    border-radius: 10px;
-    font-size: 0.7rem;
-    font-weight: 600;
-    margin-left: 0.3rem;
-}
-.badge-peso { background: #FFF3E0; color: #E65100; }
-.badge-unidad { background: #E3F2FD; color: #1565C0; }
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 0.3rem;
+        }
+        .badge-peso { background: #FFF3E0; color: #E65100; }
+        .badge-unidad { background: #E3F2FD; color: #1565C0; }
 
-.dashboard-stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-.stat-card {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 1rem;
-    border-radius: 12px;
-    text-align: center;
-}
-.stat-card.success { background: linear-gradient(135deg, #43A047, #2E7D32); }
-.stat-card.warning { background: linear-gradient(135deg, #FF9800, #F57C00); }
-.stat-card.danger { background: linear-gradient(135deg, #E53935, #C62828); }
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .stat-card.success { background: linear-gradient(135deg, #43A047, #2E7D32); }
+        .stat-card.warning { background: linear-gradient(135deg, #FF9800, #F57C00); }
+        .stat-card.danger { background: linear-gradient(135deg, #E53935, #C62828); }
 
-.alert-stock {
-    background: #FFEBEE;
-    border-left: 4px solid #E53935;
-    padding: 0.5rem;
-    margin: 0.5rem 0;
-    font-size: 0.8rem;
-}
+        .alert-stock {
+            background: #FFEBEE;
+            border-left: 4px solid #E53935;
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+            font-size: 0.8rem;
+        }
 
-@media print { .no-print { display: none; } body { background: white; } }
-@media (max-width: 768px) {
-    .producto-card, .cart-item { flex-direction: column; text-align: center; }
-    .tab { padding: 0.5rem; font-size: 0.75rem; }
-    .dashboard-stats { grid-template-columns: 1fr; }
-}
+        @media print { .no-print { display: none; } body { background: white; } }
+        @media (max-width: 768px) {
+            .producto-card, .cart-item { flex-direction: column; text-align: center; }
+            .tab { padding: 0.5rem; font-size: 0.75rem; }
+            .dashboard-stats { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
@@ -244,8 +240,7 @@ input:focus, select:focus { outline: none; border-color: #E53935; }
         </div>
     </div>
 
-    <!-- SISTEMA PRINCIPAL -->
-    <div id="sistemaScreen" class="hidden">
+    <!-- SISTEMA PRINCIPAL --><div id="sistemaScreen" class="hidden">
         <div class="header">
             <div class="header-content">
                 <div>
@@ -274,476 +269,469 @@ input:focus, select:focus { outline: none; border-color: #E53935; }
                 <button class="tab" onclick="switchTab('proveedores', this)">🏭 PROVEEDORES</button>
                 <button class="tab" onclick="switchTab('fiados', this)">📒 FIADOS</button>
             </div>
-        </div>    <div class="container">
-        <!-- DASHBOARD -->
-        <div class="page" id="dashboard">
-            <div class="dashboard-stats" id="dashboardStats"></div>
-            <div class="card">
-                <h3>📈 Ventas últimos 7 días</h3>
-                <canvas id="ventasChart" style="max-height: 300px; width: 100%;"></canvas>
-            </div>
-            <div class="card">
-                <h3>⚠️ Stock bajo</h3>
-                <div id="alertasStock"></div>
-            </div>
         </div>
 
-        <!-- VENDER -->
-        <div class="page active" id="vender">
-            <div class="card">
-                <h3>🔍 Buscar Producto</h3>
-                <input type="text" id="searchVenta" placeholder="Nombre..." oninput="renderProductosVenta()" style="margin: 0.5rem 0;">
-                <div id="productosVenta"></div>
-            </div>
-            <div class="card">
-                <div style="display: flex; justify-content: space-between;">
-                    <h3>🛒 Carrito</h3>
-                    <button class="btn btn-secondary" onclick="limpiarCarrito()">Limpiar</button>
+        <div class="container">
+            <!-- DASHBOARD -->
+            <div class="page" id="dashboard">
+                <div class="dashboard-stats" id="dashboardStats"></div>
+                <div class="card">
+                    <h3>📈 Ventas últimos 7 días</h3>
+                    <canvas id="ventasChart" style="max-height: 300px; width: 100%;"></canvas>
                 </div>
-                <div id="carritoItems"></div>
-                <div style="background:#F5F5F5; padding:1rem; border-radius:10px; margin-top:1rem;">
+                <div class="card">
+                    <h3>⚠️ Stock bajo</h3>
+                    <div id="alertasStock"></div>
+                </div>
+            </div>
+
+            <!-- VENDER -->
+            <div class="page active" id="vender">
+                <div class="card">
+                    <h3>🔍 Buscar Producto</h3>
+                    <input type="text" id="searchVenta" placeholder="Nombre..." oninput="renderProductosVenta()" style="margin: 0.5rem 0;">
+                    <div id="productosVenta"></div>
+                </div>
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between;">
+                        <h3>🛒 Carrito</h3>
+                        <button class="btn btn-secondary" onclick="limpiarCarrito()">Limpiar</button>
+                    </div>
+                    <div id="carritoItems"></div>
+                    <div style="background:#F5F5F5; padding:1rem; border-radius:10px; margin-top:1rem;">
+                        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
+                            <div><label>💵 Pago:</label><select id="formaPago" style="width: auto; padding: 0.3rem;"><option value="efectivo">Efectivo</option><option value="tarjeta">Tarjeta</option><option value="transferencia">Transferencia</option><option value="fiado">Fiado (crédito)</option></select></div>
+                            <div><label>💰 Recibido:</label><input type="number" id="montoRecibido" step="0.01" placeholder="0.00" style="width: 120px; padding: 0.3rem;" oninput="calcularVuelto()"><span id="vuelto" style="color:#43A047;"></span></div>
+                        </div>
+                        <h2 style="color:#E53935;">Total: $<span id="totalCarrito">0.00</span></h2>
+                        <button class="btn btn-success" onclick="confirmarVenta()" style="width:100%;">💰 COBRAR</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRODUCTOS -->
+            <div class="page" id="productos">
+                <div class="card">
                     <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
-                        <div><label>💵 Pago:</label><select id="formaPago" style="width: auto; padding: 0.3rem;"><option value="efectivo">Efectivo</option><option value="tarjeta">Tarjeta</option><option value="transferencia">Transferencia</option><option value="fiado">Fiado (crédito)</option></select></div>
-                        <div><label>💰 Recibido:</label><input type="number" id="montoRecibido" step="0.01" placeholder="0.00" style="width: 120px; padding: 0.3rem;" oninput="calcularVuelto()"><span id="vuelto" style="color:#43A047;"></span></div>
+                        <h3>📦 Productos</h3>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn btn-primary" onclick="abrirModalProducto()">+ Agregar</button>
+                            <button class="btn btn-warning" onclick="abrirModalCosto()">💰 Costos</button>
+                        </div>
                     </div>
-                    <h2 style="color:#E53935;">Total: $<span id="totalCarrito">0.00</span></h2>
-                    <button class="btn btn-success" onclick="confirmarVenta()" style="width:100%;">💰 COBRAR</button>
+                    <div id="listaProductos"></div>
                 </div>
             </div>
-        </div>
 
-        <!-- PRODUCTOS -->
-        <div class="page" id="productos">
-            <div class="card">
-                <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
-                    <h3>📦 Productos</h3>
-                    <div style="display: flex; gap: 0.5rem;">
-                        <button class="btn btn-primary" onclick="abrirModalProducto()">+ Agregar</button>
-                        <button class="btn btn-warning" onclick="abrirModalCosto()">💰 Costos</button>
+            <!-- HISTORIAL -->
+            <div class="page" id="historial">
+                <div class="card">
+                    <h3>📅 Historial de Ventas</h3>
+                    <div style="display: flex; gap: 0.5rem; margin: 1rem 0; flex-wrap: wrap;">
+                        <select id="filtroMes" onchange="renderHistorialVentas()"></select>
+                        <select id="filtroUsuario" onchange="renderHistorialVentas()"></select>
                     </div>
+                    <div id="historialVentas"></div>
                 </div>
-                <div id="listaProductos"></div>
             </div>
-        </div>
 
-        <!-- HISTORIAL -->
-        <div class="page" id="historial">
-            <div class="card">
-                <h3>📅 Historial de Ventas</h3>
-                <div style="display: flex; gap: 0.5rem; margin: 1rem 0; flex-wrap: wrap;">
-                    <select id="filtroMes" onchange="renderHistorialVentas()"></select>
-                    <select id="filtroUsuario" onchange="renderHistorialVentas()"></select>
+            <!-- REPORTES -->
+            <div class="page" id="reportes">
+                <div class="card">
+                    <h3>📄 Reportes</h3>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin: 1rem 0;">
+                        <button class="btn btn-primary" onclick="generarReportePDF('diario')">📅 Diario</button>
+                        <button class="btn btn-primary" onclick="generarReportePDF('semanal')">📊 Semanal</button>
+                        <button class="btn btn-primary" onclick="generarReportePDF('mensual')">📈 Mensual</button>
+                        <button class="btn btn-success" onclick="generarReporteGanancias()">💰 Ganancias</button>
+                    </div>
+                    <div id="previsualizacionReporte" style="background:#F5F5F5; padding:1rem; border-radius:8px; max-height:400px; overflow-y:auto;"></div>
                 </div>
-                <div id="historialVentas"></div>
             </div>
-        </div>
 
-        <!-- REPORTES -->
-        <div class="page" id="reportes">
-            <div class="card">
-                <h3>📄 Reportes</h3>
-                <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin: 1rem 0;">
-                    <button class="btn btn-primary" onclick="generarReportePDF('diario')">📅 Diario</button>
-                    <button class="btn btn-primary" onclick="generarReportePDF('semanal')">📊 Semanal</button>
-                    <button class="btn btn-primary" onclick="generarReportePDF('mensual')">📈 Mensual</button>
-                    <button class="btn btn-success" onclick="generarReporteGanancias()">💰 Ganancias</button>
+            <!-- PROVEEDORES -->
+            <div class="page" id="proveedores">
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between;">
+                        <h3>🏭 Proveedores</h3>
+                        <button class="btn btn-primary" onclick="abrirModalProveedor()">+ Agregar</button>
+                    </div>
+                    <div id="listaProveedores"></div>
                 </div>
-                <div id="previsualizacionReporte" style="background:#F5F5F5; padding:1rem; border-radius:8px; max-height:400px; overflow-y:auto;"></div>
             </div>
-        </div>
 
-        <!-- PROVEEDORES -->
-        <div class="page" id="proveedores">
-            <div class="card">
-                <div style="display: flex; justify-content: space-between;">
-                    <h3>🏭 Proveedores</h3>
-                    <button class="btn btn-primary" onclick="abrirModalProveedor()">+ Agregar</button>
+            <!-- FIADOS -->
+            <div class="page" id="fiados">
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                        <h3>📒 Clientes con Fiado</h3>
+                        <button class="btn btn-primary" onclick="agregarClienteFiado()">+ Agregar Cliente</button>
+                    </div>
+                    <div id="listaClientesFiado"></div>
                 </div>
-                <div id="listaProveedores"></div>
-            </div>
-        </div>
-
-        <!-- FIADOS -->
-        <div class="page" id="fiados">
-            <div class="card">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
-                    <h3>📒 Clientes con Fiado</h3>
-                    <button class="btn btn-primary" onclick="agregarClienteFiado()">+ Agregar Cliente</button>
-                </div>
-                <div id="listaClientesFiado"></div>
             </div>
         </div>
     </div>
-</div><!-- MODAL PRODUCTO -->
-<div class="modal" id="modalProducto">
-    <div class="modal-content">
-        <h3 id="modalProductoTitulo">➕ Agregar Producto</h3>
-        <input type="hidden" id="productoIdEdit">
-        <input type="text" id="inputNombre" placeholder="Nombre" style="margin: 0.5rem 0;">
-        <select id="inputTipo" onchange="togglePrecioKilo()" style="margin: 0.5rem 0;">
-            <option value="unidad">Por Unidad</option>
-            <option value="peso">Por Peso (kg)</option>
-        </select>
-        <div id="precioUnidadDiv"><input type="number" id="inputPrecio" placeholder="Precio venta x unidad" step="0.01" style="margin: 0.5rem 0;"></div>
-        <div id="precioKiloDiv" style="display: none;"><input type="number" id="inputPrecioKilo" placeholder="Precio venta x kg" step="0.01" style="margin: 0.5rem 0;"></div>
-        <input type="number" id="inputStock" placeholder="Stock" step="0.001" style="margin: 0.5rem 0;">
-        <div id="costoDiv" style="display: none;"><input type="number" id="inputCosto" placeholder="Precio de costo" step="0.01" style="margin: 0.5rem 0;"></div>
-        <button class="btn btn-primary" onclick="guardarProducto()">Guardar</button>
-        <button class="btn btn-secondary" onclick="cerrarModalProducto()">Cancelar</button>
-    </div>
-</div>
 
-<!-- MODAL COSTOS -->
-<div class="modal" id="modalCosto">
-    <div class="modal-content">
-        <h3>💰 Editar Costos</h3>
-        <div id="listaCostosProductos"></div>
-        <button class="btn btn-primary" onclick="guardarCostos()">Guardar</button>
-        <button class="btn btn-secondary" onclick="cerrarModalCosto()">Cancelar</button>
-    </div>
-</div>
-
-<!-- MODAL PROVEEDOR -->
-<div class="modal" id="modalProveedor">
-    <div class="modal-content">
-        <h3>🏭 Agregar Proveedor</h3>
-        <input type="text" id="inputProveedorNombre" placeholder="Nombre" style="margin: 0.5rem 0;">
-        <input type="text" id="inputProveedorTelefono" placeholder="Teléfono" style="margin: 0.5rem 0;">
-        <input type="text" id="inputProveedorDireccion" placeholder="Dirección" style="margin: 0.5rem 0;">
-        <textarea id="inputProveedorNotas" placeholder="Notas" rows="2" style="margin: 0.5rem 0;"></textarea>
-        <button class="btn btn-primary" onclick="guardarProveedor()">Guardar</button>
-        <button class="btn btn-secondary" onclick="cerrarModalProveedor()">Cancelar</button>
-    </div>
-</div>
-
-<!-- MODAL CAJA -->
-<div class="modal" id="modalCaja">
-    <div class="modal-content">
-        <h3>💰 Apertura/Cierre de Caja</h3>
-        <div id="infoCaja" style="margin: 0.5rem 0;"></div>
-        <input type="number" id="inputMontoInicial" placeholder="Monto inicial" step="0.01" style="margin: 0.5rem 0;">
-        <button class="btn btn-success" onclick="aperturarCaja()">Abrir Caja</button>
-        <button class="btn btn-danger" onclick="cerrarCaja()">Cerrar Caja</button>
-        <button class="btn btn-secondary" onclick="cerrarModalCaja()">Cancelar</button>
-    </div>
-</div>
-
-<!-- MODAL MAYORISTA -->
-<div class="modal" id="modalMayorista">
-    <div class="modal-content">
-        <h3>🏷️ Precios Mayoristas</h3>
-        <div style="margin-bottom: 1rem;">
-            <label>📦 Producto:</label>
-            <select id="selectProductoMayorista" style="margin: 0.3rem 0;"></select>
+    <!-- MODALES -->
+    <div class="modal" id="modalProducto">
+        <div class="modal-content">
+            <h3 id="modalProductoTitulo">➕ Agregar Producto</h3>
+            <input type="hidden" id="productoIdEdit">
+            <input type="text" id="inputNombre" placeholder="Nombre" style="margin: 0.5rem 0;">
+            <select id="inputTipo" onchange="togglePrecioKilo()" style="margin: 0.5rem 0;">
+                <option value="unidad">Por Unidad</option>
+                <option value="peso">Por Peso (kg)</option>
+            </select>
+            <div id="precioUnidadDiv"><input type="number" id="inputPrecio" placeholder="Precio venta x unidad" step="0.01" style="margin: 0.5rem 0;"></div>
+            <div id="precioKiloDiv" style="display: none;"><input type="number" id="inputPrecioKilo" placeholder="Precio venta x kg" step="0.01" style="margin: 0.5rem 0;"></div>
+            <input type="number" id="inputStock" placeholder="Stock" step="0.001" style="margin: 0.5rem 0;">
+            <div id="costoDiv" style="display: none;"><input type="number" id="inputCosto" placeholder="Precio de costo" step="0.01" style="margin: 0.5rem 0;"></div>
+            <button class="btn btn-primary" onclick="guardarProducto()">Guardar</button>
+            <button class="btn btn-secondary" onclick="cerrarModalProducto()">Cancelar</button>
         </div>
-        <div style="margin-bottom: 1rem;">
-            <label>📊 Cantidad mínima:</label>
-            <input type="number" id="inputCantidadMinima" step="0.001" placeholder="Ej: 5" style="margin: 0.3rem 0;">
+    </div>
+
+    <div class="modal" id="modalCosto">
+        <div class="modal-content">
+            <h3>💰 Editar Costos</h3>
+            <div id="listaCostosProductos"></div>
+            <button class="btn btn-primary" onclick="guardarCostos()">Guardar</button>
+            <button class="btn btn-secondary" onclick="cerrarModalCosto()">Cancelar</button>
         </div>
-        <div style="margin-bottom: 1rem;">
-            <label>🏷️ Precio mayorista:</label>
-            <input type="number" id="inputPrecioMayorista" step="0.01" placeholder="Ej: 2000" style="margin: 0.3rem 0;">
+    </div>
+
+    <div class="modal" id="modalProveedor">
+        <div class="modal-content">
+            <h3>🏭 Agregar Proveedor</h3>
+            <input type="text" id="inputProveedorNombre" placeholder="Nombre" style="margin: 0.5rem 0;">
+            <input type="text" id="inputProveedorTelefono" placeholder="Teléfono" style="margin: 0.5rem 0;">
+            <input type="text" id="inputProveedorDireccion" placeholder="Dirección" style="margin: 0.5rem 0;">
+            <textarea id="inputProveedorNotas" placeholder="Notas" rows="2" style="margin: 0.5rem 0;"></textarea>
+            <button class="btn btn-primary" onclick="guardarProveedor()">Guardar</button>
+            <button class="btn btn-secondary" onclick="cerrarModalProveedor()">Cancelar</button>
         </div>
-        <button class="btn btn-primary" onclick="agregarPrecioMayorista()" style="width:100%; margin-bottom:0.5rem;">➕ Agregar/Actualizar</button>
-        <hr>
-        <h4>📋 Precios configurados:</h4>
-        <div id="listaPreciosMayoristas" style="max-height: 300px; overflow-y: auto;"></div>
-        <button class="btn btn-secondary" onclick="cerrarModalMayorista()" style="width:100%; margin-top:1rem;">Cerrar</button>
     </div>
-</div>
 
-<!-- MODAL DETALLE FIADO -->
-<div class="modal" id="modalDetalleFiado">
-    <div class="modal-content">
-        <h3>📒 Detalle de Fiado</h3>
-        <div id="detalleFiadoContent" style="max-height: 400px; overflow-y: auto;"></div>
-        <button class="btn btn-secondary" onclick="cerrarModalDetalleFiado()">Cerrar</button>
+    <div class="modal" id="modalCaja">
+        <div class="modal-content">
+            <h3>💰 Apertura/Cierre de Caja</h3>
+            <div id="infoCaja" style="margin: 0.5rem 0;"></div>
+            <input type="number" id="inputMontoInicial" placeholder="Monto inicial" step="0.01" style="margin: 0.5rem 0;">
+            <button class="btn btn-success" onclick="aperturarCaja()">Abrir Caja</button>
+            <button class="btn btn-danger" onclick="cerrarCaja()">Cerrar Caja</button>
+            <button class="btn btn-secondary" onclick="cerrarModalCaja()">Cancelar</button>
+        </div>
     </div>
-</div>
 
-<!-- MODAL CONFIRMACIÓN VENTA -->
-<div class="modal" id="modalConfirmacion">
-    <div class="modal-content">
-        <h3>✅ Confirmar Venta</h3>
-        <div id="resumenVenta" style="margin: 1rem 0;"></div>
-        <button class="btn btn-success" onclick="procesarVenta()">Confirmar</button>
-        <button class="btn btn-secondary" onclick="cerrarModalConfirmacion()">Cancelar</button>
+    <div class="modal" id="modalMayorista">
+        <div class="modal-content">
+            <h3>🏷️ Precios Mayoristas</h3>
+            <div style="margin-bottom: 1rem;">
+                <label>📦 Producto:</label>
+                <select id="selectProductoMayorista" style="margin: 0.3rem 0;"></select>
+            </div>
+            <div style="margin-bottom: 1rem;">
+                <label>📊 Cantidad mínima:</label>
+                <input type="number" id="inputCantidadMinima" step="0.001" placeholder="Ej: 5" style="margin: 0.3rem 0;">
+            </div>
+            <div style="margin-bottom: 1rem;">
+                <label>🏷️ Precio mayorista:</label>
+                <input type="number" id="inputPrecioMayorista" step="0.01" placeholder="Ej: 2000" style="margin: 0.3rem 0;">
+            </div>
+            <button class="btn btn-primary" onclick="agregarPrecioMayorista()" style="width:100%; margin-bottom:0.5rem;">➕ Agregar/Actualizar</button>
+            <hr>
+            <h4>📋 Precios configurados:</h4>
+            <div id="listaPreciosMayoristas" style="max-height: 300px; overflow-y: auto;"></div>
+            <button class="btn btn-secondary" onclick="cerrarModalMayorista()" style="width:100%; margin-top:1rem;">Cerrar</button>
+        </div>
     </div>
-</div>
 
-<!-- SUCCESS OVERLAY -->
-<div class="success-overlay" id="successOverlay">
-    <div class="success-icon">✅</div>
-    <h2>¡VENTA EXITOSA!</h2>
-    <p id="successTotal"></p>
-    <div style="display: flex; gap: 1rem; margin-top: 1rem;">
-        <button class="btn btn-primary" onclick="imprimirTicket()">🖨️ Imprimir Ticket</button>
-        <button class="btn btn-secondary" onclick="document.getElementById('successOverlay').classList.remove('active')">Cerrar</button>
+    <div class="modal" id="modalDetalleFiado">
+        <div class="modal-content">
+            <h3>📒 Detalle de Fiado</h3>
+            <div id="detalleFiadoContent" style="max-height: 400px; overflow-y: auto;"></div>
+            <button class="btn btn-secondary" onclick="cerrarModalDetalleFiado()">Cerrar</button>
+        </div>
     </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>// ==================== VARIABLES GLOBALES ====================
-let productos = [];
-let ventas = [];
-let cierres = [];
-let proveedores = [];
-let preciosMayoristas = [];
-let clientesFiado = [];
-let cajaActual = null;
-let carrito = [];
-let fechaTrabajo = '';
-let usuarioActual = '';
-let chartVentas = null;
-let ticketAutomatico = false;
+    <div class="modal" id="modalConfirmacion">
+        <div class="modal-content">
+            <h3>✅ Confirmar Venta</h3>
+            <div id="resumenVenta" style="margin: 1rem 0;"></div>
+            <button class="btn btn-success" onclick="procesarVenta()">Confirmar</button>
+            <button class="btn btn-secondary" onclick="cerrarModalConfirmacion()">Cancelar</button>
+        </div>
+    </div>
 
-// ==================== UTILIDADES ====================
-function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, function(m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
+    <div class="success-overlay" id="successOverlay">
+        <div class="success-icon">✅</div>
+        <h2>¡VENTA EXITOSA!</h2>
+        <p id="successTotal"></p>
+        <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+            <button class="btn btn-primary" onclick="imprimirTicket()">🖨️ Imprimir Ticket</button>
+            <button class="btn btn-secondary" onclick="document.getElementById('successOverlay').classList.remove('active')">Cerrar</button>
+        </div>
+    </div>
 
-// ==================== DATOS LOCALES ====================
-function cargarDatosLocales() {
-    productos = JSON.parse(localStorage.getItem('productos_kiosco')) || [
-        { id: '1', nombre: 'Coca Cola 2.25L', precio: 2500, costo: 1800, stock: 12, tipo: 'unidad' },
-        { id: '2', nombre: 'Jamón Cocido', precio: 8500, costo: 6200, stock: 3.5, tipo: 'peso' },
-        { id: '3', nombre: 'Alimento Dog Chow', precio: 3000, costo: 2100, stock: 20, tipo: 'peso' }
-    ];
-    ventas = JSON.parse(localStorage.getItem('ventas_kiosco')) || [];
-    cierres = JSON.parse(localStorage.getItem('cierres_kiosco')) || [];
-    proveedores = JSON.parse(localStorage.getItem('proveedores_kiosco')) || [];
-    preciosMayoristas = JSON.parse(localStorage.getItem('precios_mayoristas')) || [];
-    clientesFiado = JSON.parse(localStorage.getItem('clientes_fiado')) || [];
-    cajaActual = JSON.parse(localStorage.getItem('caja_kiosco')) || null;
-    ticketAutomatico = localStorage.getItem('ticket_automatico') === 'true';
-}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // ==================== VARIABLES GLOBALES ====================
+     let productos = [];
+        let ventas = [];
+        let cierres = [];
+        let proveedores = [];
+        let preciosMayoristas = [];
+        let clientesFiado = [];
+        let cajaActual = null;
+        let carrito = [];
+        let fechaTrabajo = '';
+        let usuarioActual = '';
+        let chartVentas = null;
+        let ticketAutomatico = false;
 
-function guardarDatosLocales() {
-    localStorage.setItem('productos_kiosco', JSON.stringify(productos));
-    localStorage.setItem('ventas_kiosco', JSON.stringify(ventas));
-    localStorage.setItem('cierres_kiosco', JSON.stringify(cierres));
-    localStorage.setItem('proveedores_kiosco', JSON.stringify(proveedores));
-    localStorage.setItem('precios_mayoristas', JSON.stringify(preciosMayoristas));
-    localStorage.setItem('clientes_fiado', JSON.stringify(clientesFiado));
-    localStorage.setItem('caja_kiosco', JSON.stringify(cajaActual));
-    localStorage.setItem('ticket_automatico', ticketAutomatico);
-}
+        function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, function(m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
 
-function exportarDatos() {
-    const datos = { productos, ventas, cierres, proveedores, preciosMayoristas, clientesFiado, cajaActual };
-    const blob = new Blob([JSON.stringify(datos, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `backup_${new Date().toISOString().split('T')[0]}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-    alert('✅ Backup exportado');
-}
+        function cargarDatosLocales() {
+            productos = JSON.parse(localStorage.getItem('productos_kiosco')) || [
+                { id: '1', nombre: 'Coca Cola 2.25L', precio: 2500, costo: 1800, stock: 12, tipo: 'unidad' },
+                { id: '2', nombre: 'Jamón Cocido', precio: 8500, costo: 6200, stock: 3.5, tipo: 'peso' },
+                { id: '3', nombre: 'Alimento Dog Chow', precio: 3000, costo: 2100, stock: 20, tipo: 'peso' }
+            ];
+            ventas = JSON.parse(localStorage.getItem('ventas_kiosco')) || [];
+            cierres = JSON.parse(localStorage.getItem('cierres_kiosco')) || [];
+            proveedores = JSON.parse(localStorage.getItem('proveedores_kiosco')) || [];
+            preciosMayoristas = JSON.parse(localStorage.getItem('precios_mayoristas')) || [];
+            clientesFiado = JSON.parse(localStorage.getItem('clientes_fiado')) || [];
+            cajaActual = JSON.parse(localStorage.getItem('caja_kiosco')) || null;
+            ticketAutomatico = localStorage.getItem('ticket_automatico') === 'true';
+        }
 
-// ==================== LOGIN ====================
-function login() {
-    const user = document.getElementById('loginUserSelect').value;
-    const pass = document.getElementById('loginPass').value;
-    fechaTrabajo = document.getElementById('inputFecha').value;
-    if (!fechaTrabajo) { alert('⚠️ Seleccione fecha'); return; }
-    const usuarios = { admin: '1910', cajero1: '1234', cajero2: '1234' };
-    if (usuarios[user] === pass) {
-        usuarioActual = user;
-        cargarDatosLocales();
-        document.getElementById('loginScreen').classList.add('hidden');
-        document.getElementById('sistemaScreen').classList.remove('hidden');
-        const fecha = new Date(fechaTrabajo + 'T00:00:00');
-        document.getElementById('headerFecha').textContent = fecha.toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-        document.getElementById('headerUsuario').textContent = `👤 ${user === 'admin' ? 'Admin' : user === 'cajero1' ? 'Cajero 1' : 'Cajero 2'}`;
-        renderProductosVenta();
-        renderListaProductos();
-        renderListaProveedores();
-        renderListaClientesFiado();
-        cargarFiltrosMes();
-        actualizarDashboard();
-        verificarStockBajo();
-        if (typeof renderListaPreciosMayoristas === 'function') renderListaPreciosMayoristas();
-    } else {
-        alert('❌ Usuario o contraseña incorrectos\nadmin/1910 | cajero1/1234 | cajero2/1234');
-        document.getElementById('loginPass').value = '';
-    }
-}
+        function guardarDatosLocales() {
+            localStorage.setItem('productos_kiosco', JSON.stringify(productos));
+            localStorage.setItem('ventas_kiosco', JSON.stringify(ventas));
+            localStorage.setItem('cierres_kiosco', JSON.stringify(cierres));
+            localStorage.setItem('proveedores_kiosco', JSON.stringify(proveedores));
+            localStorage.setItem('precios_mayoristas', JSON.stringify(preciosMayoristas));
+            localStorage.setItem('clientes_fiado', JSON.stringify(clientesFiado));
+            localStorage.setItem('caja_kiosco', JSON.stringify(cajaActual));
+            localStorage.setItem('ticket_automatico', ticketAutomatico);
+        }
 
-function cerrarSesion() {
-    if (confirm('¿Cerrar sesión?')) {
-        carrito = [];
-        document.getElementById('sistemaScreen').classList.add('hidden');
-        document.getElementById('loginScreen').classList.remove('hidden');
-        document.getElementById('loginPass').value = '';
-        document.getElementById('inputFecha').value = new Date().toISOString().split('T')[0];
-    }
-}
+        function exportarDatos() {
+            const datos = { productos, ventas, cierres, proveedores, preciosMayoristas, clientesFiado, cajaActual };
+            const blob = new Blob([JSON.stringify(datos, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `backup_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            alert('✅ Backup exportado');
+        }
 
-function verHistorialCierres() {
-    if (!cierres.length) { alert('📋 No hay cierres'); return; }
-    let msg = '📋 CIERRES\n\n';
-    cierres.slice().reverse().forEach(c => {
-        msg += `${new Date(c.fecha+'T00:00:00').toLocaleDateString('es-AR')}\nVentas: ${c.ventas} | Total: $${c.total.toFixed(2)}\n\n`;
-    });
-    alert(msg);
-}
+        function login() {
+            const user = document.getElementById('loginUserSelect').value;
+            const pass = document.getElementById('loginPass').value;
+            fechaTrabajo = document.getElementById('inputFecha').value;
+            if (!fechaTrabajo) { alert('⚠️ Seleccione fecha'); return; }
+            const usuarios = { admin: '1910', cajero1: '1234', cajero2: '1234' };
+            if (usuarios[user] === pass) {
+                usuarioActual = user;
+                cargarDatosLocales();
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('sistemaScreen').classList.remove('hidden');
+                const fecha = new Date(fechaTrabajo + 'T00:00:00');
+                document.getElementById('headerFecha').textContent = fecha.toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+                document.getElementById('headerUsuario').textContent = `👤 ${user === 'admin' ? 'Admin' : user === 'cajero1' ? 'Cajero 1' : 'Cajero 2'}`;
+                renderProductosVenta();
+                renderListaProductos();
+                renderListaProveedores();
+                renderListaClientesFiado();
+                cargarFiltrosMes();
+                actualizarDashboard();
+                verificarStockBajo();
+                if (typeof renderListaPreciosMayoristas === 'function') renderListaPreciosMayoristas();
+            } else {
+                alert('❌ Usuario o contraseña incorrectos\nadmin/1910 | cajero1/1234 | cajero2/1234');
+                document.getElementById('loginPass').value = '';
+            }
+        }
 
-function switchTab(page, btn) {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    btn.classList.add('active');
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById(page).classList.add('active');
-    if (page === 'productos') renderListaProductos();
-    if (page === 'historial') renderHistorialVentas();
-    if (page === 'proveedores') renderListaProveedores();
-    if (page === 'fiados') renderListaClientesFiado();
-}
+        function cerrarSesion() {
+            if (confirm('¿Cerrar sesión?')) {
+                carrito = [];
+                document.getElementById('sistemaScreen').classList.add('hidden');
+                document.getElementById('loginScreen').classList.remove('hidden');
+                document.getElementById('loginPass').value = '';
+                document.getElementById('inputFecha').value = new Date().toISOString().split('T')[0];
+            }
+        }
 
-// ==================== DASHBOARD ====================
-function actualizarDashboard() {
-    const ventasHoy = ventas.filter(v => v.fechaTrabajo === fechaTrabajo && v.usuario === usuarioActual);
-    const totalHoy = ventasHoy.reduce((s, v) => s + (v.total || 0), 0);
-    const gananciaHoy = ventasHoy.reduce((s, v) => s + (v.gananciaTotal || 0), 0);
-    const ventasMes = ventas.filter(v => { const f = new Date(v.fecha); const a = new Date(); return f.getMonth() === a.getMonth() && f.getFullYear() === a.getFullYear(); });
-    const totalMes = ventasMes.reduce((s, v) => s + (v.total || 0), 0);
-    document.getElementById('dashboardStats').innerHTML = `
-        <div class="stat-card success"><div style="font-size:2rem;">$${totalHoy.toFixed(2)}</div><div>Ventas hoy</div></div>
-        <div class="stat-card"><div style="font-size:2rem;">$${gananciaHoy.toFixed(2)}</div><div>Ganancia hoy</div></div>
-        <div class="stat-card warning"><div style="font-size:2rem;">$${totalMes.toFixed(2)}</div><div>Ventas del mes</div></div>
-        <div class="stat-card danger"><div style="font-size:2rem;">${cajaActual ? `$${(cajaActual.montoActual || 0).toFixed(2)}` : 'Caja cerrada'}</div><div>Efectivo</div></div>`;
-    const ultimos7 = [];
-    for (let i = 6; i >= 0; i--) {
-        const fecha = new Date(); fecha.setDate(fecha.getDate() - i);
-        const total = ventas.filter(v => v.fechaTrabajo === fecha.toISOString().split('T')[0]).reduce((s, v) => s + (v.total || 0), 0);
-        ultimos7.push({ fecha: fecha.toLocaleDateString('es-AR', { weekday: 'short' }), total });
-    }
-    if (chartVentas) chartVentas.destroy();
-    const ctx = document.getElementById('ventasChart').getContext('2d');
-    chartVentas = new Chart(ctx, { type: 'bar', data: { labels: ultimos7.map(d => d.fecha), datasets: [{ label: 'Ventas', data: ultimos7.map(d => d.total), backgroundColor: '#E53935' }] }, options: { responsive: true } });
-}
+        function verHistorialCierres() {
+            if (!cierres.length) { alert('📋 No hay cierres'); return; }
+            let msg = '📋 CIERRES\n\n';
+            cierres.slice().reverse().forEach(c => {
+                msg += `${new Date(c.fecha+'T00:00:00').toLocaleDateString('es-AR')}\nVentas: ${c.ventas} | Total: $${c.total.toFixed(2)}\n\n`;
+            });
+            alert(msg);
+        }
 
-function verificarStockBajo() {
-    const bajos = productos.filter(p => p.stock < 5 && p.stock > 0);
-    const agotados = productos.filter(p => p.stock <= 0);
-    let html = '';
-    if (bajos.length) { html += `<div class="alert-stock">⚠️ STOCK BAJO:<br>`; bajos.forEach(p => { html += `• ${p.nombre}: ${p.stock.toFixed(2)} ${p.tipo === 'peso' ? 'kg' : 'und'}<br>`; }); html += `</div>`; }
-    if (agotados.length) { html += `<div class="alert-stock" style="border-left-color:#FF9800;">❌ SIN STOCK:<br>`; agotados.forEach(p => { html += `• ${p.nombre}<br>`; }); html += `</div>`; }
-    if (!bajos.length && !agotados.length) { html = '<p style="color:#43A047;">✅ Stock OK</p>'; }
-    document.getElementById('alertasStock').innerHTML = html;
-}
+        function switchTab(page, btn) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(page).classList.add('active');
+            if (page === 'productos') renderListaProductos();
+            if (page === 'historial') renderHistorialVentas();
+            if (page === 'proveedores') renderListaProveedores();
+            if (page === 'fiados') renderListaClientesFiado();
+        }
 
-// ==================== PRODUCTOS ====================
-function renderListaProductos() {
-    if (!productos.length) {
-        document.getElementById('listaProductos').innerHTML = '<p style="text-align:center;color:#999;padding:2rem;">📦 No hay productos</p>';
-        return;
-    }
-    document.getElementById('listaProductos').innerHTML = productos.map(p => {
-        let ganancia = (p.precio - (p.costo || 0)).toFixed(2);
-        let margen = p.costo ? ((p.precio - p.costo) / p.costo * 100).toFixed(1) : 0;
-        return `<div class="producto-card"><div><strong>${escapeHtml(p.nombre)}</strong><span class="badge ${p.tipo === 'peso' ? 'badge-peso' : 'badge-unidad'}">${p.tipo === 'peso' ? 'KG' : 'UND'}</span><br><small>Venta: $${p.precio.toFixed(2)}${p.tipo === 'peso' ? '/kg' : ''} | Costo: $${(p.costo || 0).toFixed(2)} | Ganancia: $${ganancia} (${margen}%)</small><br><small>Stock: ${p.stock.toFixed(2)}</small></div><div style="display:flex; gap:0.3rem;"><button class="btn btn-warning" onclick="editarProducto('${p.id}')" style="padding:0.3rem 0.8rem;">✏️</button><button class="btn btn-danger" onclick="eliminarProducto('${p.id}')" style="padding:0.3rem 0.8rem;">🗑️</button></div></div>`;
-    }).join('');
-}
+        function actualizarDashboard() {
+            const ventasHoy = ventas.filter(v => v.fechaTrabajo === fechaTrabajo && v.usuario === usuarioActual);
+            const totalHoy = ventasHoy.reduce((s, v) => s + (v.total || 0), 0);
+            const gananciaHoy = ventasHoy.reduce((s, v) => s + (v.gananciaTotal || 0), 0);
+            const ventasMes = ventas.filter(v => { const f = new Date(v.fecha); const a = new Date(); return f.getMonth() === a.getMonth() && f.getFullYear() === a.getFullYear(); });
+            const totalMes = ventasMes.reduce((s, v) => s + (v.total || 0), 0);
+            document.getElementById('dashboardStats').innerHTML = `
+                <div class="stat-card success"><div style="font-size:2rem;">$${totalHoy.toFixed(2)}</div><div>Ventas hoy</div></div>
+                <div class="stat-card"><div style="font-size:2rem;">$${gananciaHoy.toFixed(2)}</div><div>Ganancia hoy</div></div>
+                <div class="stat-card warning"><div style="font-size:2rem;">$${totalMes.toFixed(2)}</div><div>Ventas del mes</div></div>
+                <div class="stat-card danger"><div style="font-size:2rem;">${cajaActual ? `$${(cajaActual.montoActual || 0).toFixed(2)}` : 'Caja cerrada'}</div><div>Efectivo</div></div>`;
+            const ultimos7 = [];
+            for (let i = 6; i >= 0; i--) {
+                const fecha = new Date(); fecha.setDate(fecha.getDate() - i);
+                const total = ventas.filter(v => v.fechaTrabajo === fecha.toISOString().split('T')[0]).reduce((s, v) => s + (v.total || 0), 0);
+                ultimos7.push({ fecha: fecha.toLocaleDateString('es-AR', { weekday: 'short' }), total });
+            }
+            if (chartVentas) chartVentas.destroy();
+            const ctx = document.getElementById('ventasChart').getContext('2d');
+            chartVentas = new Chart(ctx, { type: 'bar', data: { labels: ultimos7.map(d => d.fecha), datasets: [{ label: 'Ventas', data: ultimos7.map(d => d.total), backgroundColor: '#E53935' }] }, options: { responsive: true } });
+        }
 
-function editarProducto(id) {
-    const p = productos.find(x => x.id === id);
-    if (!p) { alert('❌ Producto no encontrado'); return; }
-    document.getElementById('modalProductoTitulo').textContent = '✏️ Editar';
-    document.getElementById('productoIdEdit').value = p.id;
-    document.getElementById('inputNombre').value = p.nombre;
-    document.getElementById('inputTipo').value = p.tipo;
-    document.getElementById('inputStock').value = p.stock;
-    if (p.tipo === 'peso') {
-        document.getElementById('precioUnidadDiv').style.display = 'none';
-        document.getElementById('precioKiloDiv').style.display = 'block';
-        document.getElementById('inputPrecioKilo').value = p.precio;
-    } else {
-        document.getElementById('precioUnidadDiv').style.display = 'block';
-        document.getElementById('precioKiloDiv').style.display = 'none';
-        document.getElementById('inputPrecio').value = p.precio;
-    }
-    document.getElementById('costoDiv').style.display = 'block';
-    document.getElementById('inputCosto').value = p.costo || 0;
-    document.getElementById('modalProducto').classList.add('active');
-}
+        function verificarStockBajo() {
+            const bajos = productos.filter(p => p.stock < 5 && p.stock > 0);
+            const agotados = productos.filter(p => p.stock <= 0);
+            let html = '';
+            if (bajos.length) { html += `<div class="alert-stock">⚠️ STOCK BAJO:<br>`; bajos.forEach(p => { html += `• ${p.nombre}: ${p.stock.toFixed(2)} ${p.tipo === 'peso' ? 'kg' : 'und'}<br>`; }); html += `</div>`; }
+            if (agotados.length) { html += `<div class="alert-stock" style="border-left-color:#FF9800;">❌ SIN STOCK:<br>`; agotados.forEach(p => { html += `• ${p.nombre}<br>`; }); html += `</div>`; }
+            if (!bajos.length && !agotados.length) { html = '<p style="color:#43A047;">✅ Stock OK</p>'; }
+            document.getElementById('alertasStock').innerHTML = html;
+        }
 
-function guardarProducto() {
-    const id = document.getElementById('productoIdEdit').value;
-    const nombre = document.getElementById('inputNombre').value.trim();
-    const tipo = document.getElementById('inputTipo').value;
-    let precio = tipo === 'peso' ? parseFloat(document.getElementById('inputPrecioKilo').value) : parseFloat(document.getElementById('inputPrecio').value);
-    const stock = parseFloat(document.getElementById('inputStock').value);
-    const costo = parseFloat(document.getElementById('inputCosto').value) || 0;
-    if (!nombre) { alert('❌ Ingrese nombre'); return; }
-    if (isNaN(precio) || precio <= 0) { alert('❌ Precio inválido'); return; }
-    if (isNaN(stock) || stock < 0) { alert('❌ Stock inválido'); return; }
-    if (id) {
-        const idx = productos.findIndex(p => p.id === id);
-        if (idx !== -1) productos[idx] = { ...productos[idx], nombre, precio, stock, tipo, costo };
-    } else {
-        productos.push({ id: Date.now().toString(), nombre, precio, costo, stock, tipo });
-    }
-    guardarDatosLocales();
-    renderListaProductos();
-    renderProductosVenta();
-    verificarStockBajo();
-    cerrarModalProducto();
-    limpiarFormularioProducto();
-    alert('✅ Producto guardado');
-}
+        function renderListaProductos() {
+            if (!productos.length) {
+                document.getElementById('listaProductos').innerHTML = '<p style="text-align:center;color:#999;padding:2rem;">📦 No hay productos</p>';
+                return;
+            }
+            document.getElementById('listaProductos').innerHTML = productos.map(p => {
+                let ganancia = (p.precio - (p.costo || 0)).toFixed(2);
+                let margen = p.costo ? ((p.precio - p.costo) / p.costo * 100).toFixed(1) : 0;
+                return `<div class="producto-card"><div><strong>${escapeHtml(p.nombre)}</strong><span class="badge ${p.tipo === 'peso' ? 'badge-peso' : 'badge-unidad'}">${p.tipo === 'peso' ? 'KG' : 'UND'}</span><br><small>Venta: $${p.precio.toFixed(2)}${p.tipo === 'peso' ? '/kg' : ''} | Costo: $${(p.costo || 0).toFixed(2)} | Ganancia: $${ganancia} (${margen}%)</small><br><small>Stock: ${p.stock.toFixed(2)}</small></div><div style="display:flex; gap:0.3rem;"><button class="btn btn-warning" onclick="editarProducto('${p.id}')" style="padding:0.3rem 0.8rem;">✏️</button><button class="btn btn-danger" onclick="eliminarProducto('${p.id}')" style="padding:0.3rem 0.8rem;">🗑️</button></div></div>`;
+            }).join('');
+        }
 
-function limpiarFormularioProducto() {
-    document.getElementById('modalProductoTitulo').textContent = '➕ Agregar';
-    document.getElementById('productoIdEdit').value = '';
-    document.getElementById('inputNombre').value = '';
-    document.getElementById('inputPrecio').value = '';
-    document.getElementById('inputPrecioKilo').value = '';
-    document.getElementById('inputStock').value = '';
-    document.getElementById('inputCosto').value = '';
-    document.getElementById('costoDiv').style.display = 'none';
-    document.getElementById('precioUnidadDiv').style.display = 'block';
-    document.getElementById('precioKiloDiv').style.display = 'none';
-}
+        function editarProducto(id) {
+            const p = productos.find(x => x.id === id);
+            if (!p) { alert('❌ Producto no encontrado'); return; }
+            document.getElementById('modalProductoTitulo').textContent = '✏️ Editar';
+            document.getElementById('productoIdEdit').value = p.id;
+            document.getElementById('inputNombre').value = p.nombre;
+            document.getElementById('inputTipo').value = p.tipo;
+            document.getElementById('inputStock').value = p.stock;
+            if (p.tipo === 'peso') {
+                document.getElementById('precioUnidadDiv').style.display = 'none';
+                document.getElementById('precioKiloDiv').style.display = 'block';
+                document.getElementById('inputPrecioKilo').value = p.precio;
+            } else {
+                document.getElementById('precioUnidadDiv').style.display = 'block';
+                document.getElementById('precioKiloDiv').style.display = 'none';
+                document.getElementById('inputPrecio').value = p.precio;
+            }
+            document.getElementById('costoDiv').style.display = 'block';
+            document.getElementById('inputCosto').value = p.costo || 0;
+            document.getElementById('modalProducto').classList.add('active');
+        }
 
-function eliminarProducto(id) {
-    if (!confirm('¿Eliminar?')) return;
-    productos = productos.filter(p => p.id !== id);
-    preciosMayoristas = preciosMayoristas.filter(pm => pm.productoId !== id);
-    guardarDatosLocales();
-    renderListaProductos();
-    renderProductosVenta();
-    verificarStockBajo();
-    if (typeof renderListaPreciosMayoristas === 'function') renderListaPreciosMayoristas();
-    alert('✅ Producto eliminado');
-}
+        function guardarProducto() {const id = document.getElementById('productoIdEdit').value;
+            const nombre = document.getElementById('inputNombre').value.trim();
+            const tipo = document.getElementById('inputTipo').value;
+            let precio = tipo === 'peso' ? parseFloat(document.getElementById('inputPrecioKilo').value) : parseFloat(document.getElementById('inputPrecio').value);
+            const stock = parseFloat(document.getElementById('inputStock').value);
+            const costo = parseFloat(document.getElementById('inputCosto').value) || 0;
+            if (!nombre) { alert('❌ Ingrese nombre'); return; }
+            if (isNaN(precio) || precio <= 0) { alert('❌ Precio inválido'); return; }
+            if (isNaN(stock) || stock < 0) { alert('❌ Stock inválido'); return; }
+            if (id) {
+                const idx = productos.findIndex(p => p.id === id);
+                if (idx !== -1) productos[idx] = { ...productos[idx], nombre, precio, stock, tipo, costo };
+            } else {
+                productos.push({ id: Date.now().toString(), nombre, precio, costo, stock, tipo });
+            }
+            guardarDatosLocales();
+            renderListaProductos();
+            renderProductosVenta();
+            verificarStockBajo();
+            cerrarModalProducto();
+            limpiarFormularioProducto();
+            alert('✅ Producto guardado');
+        }
 
-function togglePrecioKilo() {
-    const tipo = document.getElementById('inputTipo').value;
-    document.getElementById('precioUnidadDiv').style.display = tipo === 'peso' ? 'none' : 'block';
-    document.getElementById('precioKiloDiv').style.display = tipo === 'peso' ? 'block' : 'none';
-}
+        function limpiarFormularioProducto() {
+            document.getElementById('modalProductoTitulo').textContent = '➕ Agregar';
+            document.getElementById('productoIdEdit').value = '';
+            document.getElementById('inputNombre').value = '';
+            document.getElementById('inputPrecio').value = '';
+            document.getElementById('inputPrecioKilo').value = '';
+            document.getElementById('inputStock').value = '';
+            document.getElementById('inputCosto').value = '';
+            document.getElementById('costoDiv').style.display = 'none';
+            document.getElementById('precioUnidadDiv').style.display = 'block';
+            document.getElementById('precioKiloDiv').style.display = 'none';
+        }
 
-function abrirModalProducto() { limpiarFormularioProducto(); document.getElementById('modalProducto').classList.add('active'); }
-function cerrarModalProducto() { document.getElementById('modalProducto').classList.remove('active'); limpiarFormularioProducto(); }
+        function eliminarProducto(id) {
+            if (!confirm('¿Eliminar?')) return;
+            productos = productos.filter(p => p.id !== id);
+            preciosMayoristas = preciosMayoristas.filter(pm => pm.productoId !== id);
+            guardarDatosLocales();
+            renderListaProductos();
+            renderProductosVenta();
+            verificarStockBajo();
+            if (typeof renderListaPreciosMayoristas === 'function') renderListaPreciosMayoristas();
+            alert('✅ Producto eliminado');
+        }
 
-function abrirModalCosto() {
-    if (!productos.length) { alert('📦 No hay productos'); return; }
-    document.getElementById('listaCostosProductos').innerHTML = productos.map(p => `<div style="margin-bottom:1rem; padding:0.8rem; background:#F5F5F5; border-radius:8px;"><strong>${escapeHtml(p.nombre)}</strong><br><small>Venta: $${p.precio.toFixed(2)}${p.tipo === 'peso' ? '/kg' : ''}</small><input type="number" id="costo_${p.id}" value="${p.costo || 0}" step="0.01" placeholder="Costo" style="width:100%; margin-top:0.5rem;"></div>`).join('');
-    document.getElementById('modalCosto').classList.add('active');
-}
+        function togglePrecioKilo() {
+            const tipo = document.getElementById('inputTipo').value;
+            document.getElementById('precioUnidadDiv').style.display = tipo === 'peso' ? 'none' : 'block';
+            document.getElementById('precioKiloDiv').style.display = tipo === 'peso' ? 'block' : 'none';
+        }
 
-function guardarCostos() {
-    let actualizados = 0;
-    productos.forEach(p => {
-        const input = document.getElementById(`costo_${p.id}`);
-        if (input) { const nuevo = parseFloat(input.value); if (!isNaN(nuevo) && nuevo >= 0) { p.costo = nuevo; actualizados++; } }
-    });
-    guardarDatosLocales();
-    renderListaProductos();
-    cerrarModalCosto();
-    alert(`✅ ${actualizados} productos actualizados`);
-}
+        function abrirModalProducto() { limpiarFormularioProducto(); document.getElementById('modalProducto').classList.add('active'); }
+        function cerrarModalProducto() { document.getElementById('modalProducto').classList.remove('active'); limpiarFormularioProducto(); }
 
-function cerrarModalCosto() { document.getElementById('modalCosto').classList.remove('active'); }        // ==================== VENTAS ====================
+        function abrirModalCosto() {
+            if (!productos.length) { alert('📦 No hay productos'); return; }
+            document.getElementById('listaCostosProductos').innerHTML = productos.map(p => `<div style="margin-bottom:1rem; padding:0.8rem; background:#F5F5F5; border-radius:8px;"><strong>${escapeHtml(p.nombre)}</strong><br><small>Venta: $${p.precio.toFixed(2)}${p.tipo === 'peso' ? '/kg' : ''}</small><input type="number" id="costo_${p.id}" value="${p.costo || 0}" step="0.01" placeholder="Costo" style="width:100%; margin-top:0.5rem;"></div>`).join('');
+            document.getElementById('modalCosto').classList.add('active');
+        }
+
+        function guardarCostos() {
+            let actualizados = 0;
+            productos.forEach(p => {
+                const input = document.getElementById(`costo_${p.id}`);
+                if (input) { const nuevo = parseFloat(input.value); if (!isNaN(nuevo) && nuevo >= 0) { p.costo = nuevo; actualizados++; } }
+            });
+            guardarDatosLocales();
+            renderListaProductos();
+            cerrarModalCosto();
+            alert(`✅ ${actualizados} productos actualizados`);
+        }
+
+        function cerrarModalCosto() { document.getElementById('modalCosto').classList.remove('active'); }
+
         function renderProductosVenta() {
             const search = (document.getElementById('searchVenta').value || '').toLowerCase();
             const filtrados = productos.filter(p => p.stock > 0 && p.nombre.toLowerCase().includes(search));
@@ -881,7 +869,6 @@ function cerrarModalCosto() { document.getElementById('modalCosto').classList.re
 
         function cerrarModalConfirmacion() { document.getElementById('modalConfirmacion').classList.remove('active'); }
 
-        // ==================== HISTORIAL ====================
         function cargarFiltrosMes() {
             const meses = new Set();
             ventas.forEach(v => { if (v?.fecha) { const f = new Date(v.fecha); if (!isNaN(f.getTime())) meses.add(`${f.getFullYear()}-${String(f.getMonth() + 1).padStart(2, '0')}`); } });
@@ -891,8 +878,7 @@ function cerrarModalCosto() { document.getElementById('modalCosto').classList.re
             if (su) { const us = [...new Set(ventas.map(v => v?.usuario).filter(u => u))]; su.innerHTML = '<option value="all">👥 Todos</option>'; us.forEach(u => su.innerHTML += `<option value="${u}">${u === 'admin' ? 'Admin' : u === 'cajero1' ? 'Cajero 1' : 'Cajero 2'}</option>`); }
         }
 
-        function renderHistorialVentas() {
-            const mes = document.getElementById('filtroMes')?.value || 'all';
+        function renderHistorialVentas() {document.getElementById('filtroMes')?.value || 'all';
             const user = document.getElementById('filtroUsuario')?.value || 'all';
             let filt = [...ventas].reverse().filter(v => v?.fecha);
             if (mes !== 'all') filt = filt.filter(v => { const f = new Date(v.fecha); return `${f.getFullYear()}-${String(f.getMonth() + 1).padStart(2, '0')}` === mes; });
@@ -905,7 +891,6 @@ function cerrarModalCosto() { document.getElementById('modalCosto').classList.re
             cont.innerHTML = `<div style="background:#E8F5E9;padding:0.8rem;border-radius:8px;margin-bottom:1rem;"><strong>💰 Total: $${total.toFixed(2)}</strong><br><strong>📈 Ganancia: $${gan.toFixed(2)}</strong><br><small>${filt.length} ventas</small></div>` + filt.map(v => `<div style="background:#F5F5F5;padding:0.8rem;border-radius:8px;margin-bottom:0.5rem;"><div style="display:flex;justify-content:space-between;"><div><strong>📅 ${new Date(v.fecha).toLocaleString()}</strong><br><small>👤 ${v.usuario === 'admin' ? 'Admin' : v.usuario === 'cajero1' ? 'Cajero 1' : 'Cajero 2'} | 💳 ${v.formaPago === 'efectivo' ? 'Efectivo' : v.formaPago === 'tarjeta' ? 'Tarjeta' : 'Transferencia'}</small></div><div><strong style="color:#E53935;">$${(v.total || 0).toFixed(2)}</strong><br><small style="color:#43A047;">Ganancia: $${(v.gananciaTotal || 0).toFixed(2)}</small></div></div><div style="margin-top:0.5rem;font-size:0.8rem;">${(v.items || []).map(i => `📦 ${i.nombre}${i.esMayorista ? '🏷️' : ''}: ${(i.cantidad || 0).toFixed(2)} ${i.tipo === 'peso' ? 'kg' : 'und'} = $${(i.subtotal || 0).toFixed(2)}`).join(' • ')}</div></div>`).join('');
         }
 
-        // ==================== REPORTES ====================
         function generarReportePDF(tipo) {
             let titulo, datos;
             const hoy = new Date();
@@ -924,11 +909,10 @@ function cerrarModalCosto() { document.getElementById('modalCosto').classList.re
             if (!productos.length) { document.getElementById('previsualizacionReporte').innerHTML = '<p>No hay productos</p>'; return; }
             const prods = productos.map(p => ({ nombre: p.nombre, tipo: p.tipo, venta: p.precio, costo: p.costo || 0, ganancia: p.precio - (p.costo || 0), margen: p.costo ? ((p.precio - p.costo) / p.costo * 100).toFixed(1) : 0, stock: p.stock, valorStock: p.stock * (p.costo || 0) })).sort((a,b) => b.ganancia - a.ganancia);
             const totalStock = prods.reduce((s, p) => s + p.valorStock, 0);
-            document.getElementById('previsualizacionReporte').innerHTML = `<h3>💰 Ganancias</h3><table border="1" cellpadding="5" style="width:100%"><tr style="background:#E53935;color:white;"><th>Producto</th><th>Venta</th><th>Costo</th><th>Ganancia</th><th>Margen</th><th>Stock</th><th>Valor</th></tr>${prods.map(p => `tr><td>${p.nombre}</td><td>$${p.venta.toFixed(2)}</td><td>$${p.costo.toFixed(2)}</td><td>$${p.ganancia.toFixed(2)}</td><td>${p.margen}%</td><td>${p.stock.toFixed(2)}</td><td>$${p.valorStock.toFixed(2)}</td></tr>`).join('')}</table><p>💰 Inversión: $${totalStock.toFixed(2)}</p>`;
+            document.getElementById('previsualizacionReporte').innerHTML = `<h3>💰 Ganancias</h3><table border="1" cellpadding="5" style="width:100%"><tr style="background:#E53935;color:white;"><th>Producto</th><th>Venta</th><th>Costo</th><th>Ganancia</th><th>Margen</th><th>Stock</th><th>Valor</th> </tr>${prods.map(p => ` <tr><td>${p.nombre}</td><td>$${p.venta.toFixed(2)}</td><td>$${p.costo.toFixed(2)}</td><td>$${p.ganancia.toFixed(2)}</td><td>${p.margen}%</td><td>${p.stock.toFixed(2)}</td><td>$${p.valorStock.toFixed(2)}</td></tr>`).join('')}</table><p>💰 Inversión: $${totalStock.toFixed(2)}</p>`;
             alert('✅ Reporte listo');
         }
 
-        // ==================== PROVEEDORES ====================
         function renderListaProveedores() {
             const c = document.getElementById('listaProveedores');
             if (!c) return;
@@ -941,11 +925,121 @@ function cerrarModalCosto() { document.getElementById('modalCosto').classList.re
         function abrirModalProveedor() { document.getElementById('modalProveedor').classList.add('active'); }
         function cerrarModalProveedor() { document.getElementById('modalProveedor').classList.remove('active'); }
 
-        // ==================== CAJA ====================
         function abrirCaja() { document.getElementById('infoCaja').innerHTML = cajaActual ? `✅ Caja ABIERTA<br>📅 ${new Date(cajaActual.apertura).toLocaleString()}<br>💰 Inicial: $${(cajaActual.montoInicial || 0).toFixed(2)}<br>💵 Actual: $${(cajaActual.montoActual || 0).toFixed(2)}` : '🔴 Caja CERRADA'; document.getElementById('modalCaja').classList.add('active'); }
         function aperturarCaja() { const m = parseFloat(document.getElementById('inputMontoInicial').value); if (isNaN(m) || m < 0) { alert('❌ Monto inválido'); return; } cajaActual = { apertura: new Date().toISOString(), montoInicial: m, montoActual: m, movimientos: [] }; guardarDatosLocales(); alert(`✅ Caja abierta con $${m.toFixed(2)}`); cerrarModalCaja(); actualizarDashboard(); }
         function cerrarCaja() { if (!cajaActual) { alert('No hay caja'); return; } const ventasEf = ventas.filter(v => v && v.fechaTrabajo === fechaTrabajo && v.formaPago === 'efectivo'); const totalEf = ventasEf.reduce((s, v) => s + (v.total || 0), 0); const esp = (cajaActual.montoInicial || 0) + totalEf; if (confirm(`💰 CIERRE\nInicial: $${(cajaActual.montoInicial || 0).toFixed(2)}\nVentas efectivo: $${totalEf.toFixed(2)}\nEsperado: $${esp.toFixed(2)}\nActual: $${(cajaActual.montoActual || 0).toFixed(2)}\nDiferencia: $${((cajaActual.montoActual || 0) - esp).toFixed(2)}\n¿Cerrar?`)) { cierres.push({ fecha: fechaTrabajo, usuario: usuarioActual, ventas: ventasEf.length, total: totalEf }); cajaActual = null; guardarDatosLocales(); alert('✅ Caja cerrada'); cerrarModalCaja(); actualizarDashboard(); } }
         function cerrarModalCaja() { document.getElementById('modalCaja').classList.remove('active'); document.getElementById('inputMontoInicial').value = ''; }
 
-        // ==================== TICKET ====================
-        function configurarTicketOpcional() { cons
+        function configurarTicketOpcional() { const op = confirm('🖨️ TICKET\n"OK" = Automático\n"Cancelar" = Manual'); ticketAutomatico = !op; localStorage.setItem('ticket_automatico', ticketAutomatico); alert(ticketAutomatico ? '✅ Modo MANUAL' : '✅ Modo AUTOMÁTICO'); }
+        function imprimirTicket(v = null) { let ven = v; if (!ven) { if (!ventas.length) { alert('No hay venta'); return; } ven = ventas[ventas.length - 1]; } let html = `<div style="font-family:monospace;text-align:center;padding:1rem;"><div>🍅 MR. TOMATO</div><div>${new Date(ven.fecha).toLocaleString()}</div><hr><table style="width:100%">`; ven.items.forEach(i => { html += `<tr><td>${i.nombre}${i.esMayorista ? '🏷️' : ''}</td><td>${i.cantidad.toFixed(2)} ${i.tipo === 'peso' ? 'kg' : ''}</td><td style="text-align:right;">$${i.subtotal.toFixed(2)}</td></tr>`; }); html += `</table><hr><div><strong>TOTAL: $${ven.total.toFixed(2)}</strong></div><div>Pago: ${ven.formaPago === 'efectivo' ? 'Efectivo' : ven.formaPago === 'tarjeta' ? 'Tarjeta' : 'Transferencia'}</div>${ven.vuelto > 0 ? `<div>Vuelto: $${ven.vuelto.toFixed(2)}</div>` : ''}<hr><div>¡Gracias!</div></div>`; const w = window.open('', '_blank'); if (w) { w.document.write(html); w.document.close(); w.print(); } }
+
+        function renderListaPreciosMayoristas() { const c = document.getElementById('listaPreciosMayoristas'); if (!c) return; if (!preciosMayoristas.length) { c.innerHTML = '<p>No hay precios mayoristas</p>'; return; } c.innerHTML = preciosMayoristas.map((pm, idx) => `<div class="producto-card"><div><strong>${pm.productoNombre}</strong><br><small>Normal: $${pm.precioNormal.toFixed(2)}${pm.tipo === 'peso' ? '/kg' : ''}</small><br><small>Mayorista: $${pm.precioMayorista.toFixed(2)}${pm.tipo === 'peso' ? '/kg' : ''}</small><br><small>Mínimo: ${pm.cantidadMinima} ${pm.tipo === 'peso' ? 'kg' : 'und'}</small></div><button class="btn btn-danger" onclick="eliminarPrecioMayorista(${idx})">🗑️</button></div>`).join(''); }
+        function agregarPrecioMayorista(){ const pid = document.getElementById('selectProductoMayorista').value; const min = parseFloat(document.getElementById('inputCantidadMinima').value); const precioM = parseFloat(document.getElementById('inputPrecioMayorista').value); if (!pid) { alert('❌ Seleccione producto'); return; } if (isNaN(min) || min <= 0) { alert('❌ Cantidad mínima inválida'); return; } if (isNaN(precioM) || precioM <= 0) { alert('❌ Precio inválido'); return; } const prod = productos.find(p => p.id === pid); if (!prod) { alert('❌ Producto no encontrado'); return; } if (precioM >= prod.precio) { alert('⚠️ Precio mayorista debe ser menor'); return; } const nuevo = { productoId: pid, productoNombre: prod.nombre, precioNormal: prod.precio, precioMayorista: precioM, cantidadMinima: min, tipo: prod.tipo }; const existe = preciosMayoristas.findIndex(p => p.productoId === pid); if (existe !== -1) { if (confirm('¿Actualizar?')) preciosMayoristas[existe] = nuevo; else return; } else { preciosMayoristas.push(nuevo); } guardarDatosLocales(); renderListaPreciosMayoristas(); document.getElementById('selectProductoMayorista').value = ''; document.getElementById('inputCantidadMinima').value = ''; document.getElementById('inputPrecioMayorista').value = ''; alert('✅ Precio mayorista guardado'); }
+        function eliminarPrecioMayorista(idx) { if (confirm('¿Eliminar?')) { preciosMayoristas.splice(idx, 1); guardarDatosLocales(); renderListaPreciosMayoristas(); } }
+        function abrirModalMayorista() { const sel = document.getElementById('selectProductoMayorista'); if (sel) sel.innerHTML = '<option value="">-- Seleccionar --</option>' + productos.map(p => `<option value="${p.id}">${p.nombre} ($${p.precio.toFixed(2)}${p.tipo === 'peso' ? '/kg' : ''})</option>`).join(''); renderListaPreciosMayoristas(); document.getElementById('modalMayorista').classList.add('active'); }
+        function cerrarModalMayorista() { document.getElementById('modalMayorista').classList.remove('active'); }
+
+        function cargarClientesFiado() { clientesFiado = JSON.parse(localStorage.getItem('clientes_fiado')) || []; }
+        function guardarClientesFiado() { localStorage.setItem('clientes_fiado', JSON.stringify(clientesFiado)); }
+
+        function agregarClienteFiado() {
+            const nom = prompt('👤 Nombre:');
+            if (!nom) return;
+            if (clientesFiado.find(c => c.nombre.toLowerCase() === nom.trim().toLowerCase())) { alert('❌ Ya existe'); return; }
+            const tel = prompt('📞 Teléfono (opcional):');
+            const dir = prompt('📍 Dirección (opcional):');
+            const lim = parseFloat(prompt('💰 Límite mensual:', '50000'));
+            if (isNaN(lim) || lim <= 0) { alert('❌ Límite inválido'); return; }
+            clientesFiado.push({ id: Date.now().toString(), nombre: nom.trim(), telefono: tel || '', direccion: dir || '', limiteMensual: lim, deudas: [] });
+            guardarClientesFiado();
+            renderListaClientesFiado();
+            alert(`✅ Cliente ${nom} agregado`);
+        }
+
+        function renderListaClientesFiado() {
+            const c = document.getElementById('listaClientesFiado');
+            if (!c) return;
+            if (!clientesFiado.length) { c.innerHTML = '<p style="text-align:center;color:#999;padding:2rem;">📒 No hay clientes</p>'; return; }
+            c.innerHTML = clientesFiado.map(cl => {
+                const deuda = cl.deudas.reduce((s, d) => s + (d.monto - (d.pagado || 0)), 0);
+                const restante = cl.limiteMensual - deuda;
+                const pct = (deuda / cl.limiteMensual) * 100;
+                return `<div class="producto-card" style="flex-direction:column;"><div style="width:100%;display:flex;justify-content:space-between;"><strong>👤 ${escapeHtml(cl.nombre)}</strong><span class="badge ${deuda > cl.limiteMensual * 0.8 ? 'badge-peso' : 'badge-unidad'}">Límite: $${cl.limiteMensual.toFixed(2)}</span></div><div style="width:100%;font-size:0.8rem;">📞 ${cl.telefono || '-'} | 📍 ${cl.direccion || '-'}</div><div style="width:100%;font-size:0.8rem;color:${deuda > 0 ? '#E53935' : '#43A047'};">💰 Deuda: $${deuda.toFixed(2)} | Restante: $${restante.toFixed(2)} | ${pct.toFixed(0)}%</div><div style="margin-top:0.5rem;display:flex;gap:0.3rem;"><button class="btn btn-primary" onclick="verDetalleFiado('${cl.id}')" style="padding:0.3rem 0.8rem;">📋</button><button class="btn btn-success" onclick="registrarPagoFiado('${cl.id}')" style="padding:0.3rem 0.8rem;">💰</button><button class="btn btn-warning" onclick="agregarDeudaFiado('${cl.id}')" style="padding:0.3rem 0.8rem;">➕</button><button class="btn btn-danger" onclick="eliminarClienteFiado('${cl.id}')" style="padding:0.3rem 0.8rem;">🗑️</button></div></div>`;
+            }).join('');
+        }
+
+        function verDetalleFiado(id) {
+            const cl = clientesFiado.find(c => c.id === id);
+            if (!cl) return;
+            const deuda = cl.deudas.reduce((s, d) => s + (d.monto - (d.pagado || 0)), 0);
+            let html = `<h4>📒 ${escapeHtml(cl.nombre)}</h4><p>📞 ${cl.telefono || '-'} | 📍 ${cl.direccion || '-'}</p><p>💰 Límite: $${cl.limiteMensual.toFixed(2)} | 💸 Deuda: $${deuda.toFixed(2)}</p><hr><h5>Deudas:</h5>`;
+            const pendientes = cl.deudas.filter(d => (d.monto - (d.pagado || 0)) > 0);
+            if (!pendientes.length) html += '<p>✅ Sin deudas</p>';
+            else { html += `<table style="width:100%"><tr style="background:#E53935;color:white;"><th>Fecha</th><th>Monto</th><th>Pagado</th><th>Saldo</th></tr>`; pendientes.forEach(d => { const saldo = d.monto - (d.pagado || 0); html += `<tr><td>${new Date(d.fecha).toLocaleDateString()}</td><td>$${d.monto.toFixed(2)}</td><td>$${(d.pagado || 0).toFixed(2)}</td><td style="color:#E53935;">$${saldo.toFixed(2)}</td></tr>`; }); html += `</table>`; }
+            html += `<hr><h5>Pagos:</h5>`;
+            const pagos = cl.deudas.flatMap(d => d.pagos || []);
+            if (!pagos.length) html += '<p>Sin pagos</p>';
+            else { html += `<ul>`; pagos.slice().reverse().forEach(p => { html += `<li>${new Date(p.fecha).toLocaleDateString()} - Pagó $${p.monto.toFixed(2)} (${p.usuario})</li>`; }); html += `</ul>`; }
+            document.getElementById('detalleFiadoContent').innerHTML = html;
+            document.getElementById('modalDetalleFiado').classList.add('active');
+        }
+
+        function registrarPagoFiado(id) {
+            const cl = clientesFiado.find(c => c.id === id);
+            if (!cl) return;
+            const totalDeuda = cl.deudas.reduce((s, d) => s + (d.monto - (d.pagado || 0)), 0);
+            if (totalDeuda <= 0) { alert('✅ Sin deudas'); return; }
+            const monto = parseFloat(prompt(`💰 PAGO\nCliente: ${cl.nombre}\nDeuda: $${totalDeuda.toFixed(2)}\n¿Cuánto paga?`, totalDeuda.toFixed(2)));
+            if (isNaN(monto) || monto <= 0) { alert('❌ Monto inválido'); return; }
+            if (monto > totalDeuda) { alert(`❌ Máximo $${totalDeuda.toFixed(2)}`); return; }
+            let resto = monto;
+            for (const d of cl.deudas) {
+                if (resto <= 0) break;
+                const saldo = d.monto - (d.pagado || 0);
+                if (saldo > 0) {
+                    const aplicado = Math.min(resto, saldo);
+                    d.pagado = (d.pagado || 0) + aplicado;
+                    d.pagos = d.pagos || [];
+                    d.pagos.push({ fecha: new Date().toISOString(), monto: aplicado, usuario: usuarioActual });
+                    resto -= aplicado;
+                }
+            }
+            guardarClientesFiado();
+            renderListaClientesFiado();
+            alert(`✅ Pago de $${monto.toFixed(2)} registrado`);
+        }
+
+        function agregarDeudaFiado(id) {
+            const cl = clientesFiado.find(c => c.id === id);
+            if (!cl) return;
+            const deudaActual = cl.deudas.reduce((s, d) => s + (d.monto - (d.pagado || 0)), 0);
+            const disponible = cl.limiteMensual - deudaActual;
+            if (disponible <= 0) { alert(`❌ Límite alcanzado`); return; }
+            const monto = parseFloat(prompt(`📒 NUEVO FIADO\nCliente: ${cl.nombre}\nDisponible: $${disponible.toFixed(2)}\nMonto:`));
+            if (isNaN(monto) || monto <= 0) { alert('❌ Monto inválido'); return; }
+            if (monto > disponible) { alert(`❌ Supera límite ($${disponible.toFixed(2)})`); return; }
+            cl.deudas.push({ id: Date.now().toString(), fecha: new Date().toISOString(), monto, pagado: 0, fechaVencimiento: null, pagos: [], usuario: usuarioActual });
+            guardarClientesFiado();
+            renderListaClientesFiado();
+            alert(`✅ Fiado de $${monto.toFixed(2)} agregado`);
+        }
+
+        function eliminarClienteFiado(id) {
+            if (confirm('¿Eliminar cliente y todo su historial?')) {
+                clientesFiado = clientesFiado.filter(c => c.id !== id);
+                guardarClientesFiado();
+                renderListaClientesFiado();
+                alert('✅ Cliente eliminado');
+            }
+        }
+
+        function cerrarModalDetalleFiado() { document.getElementById('modalDetalleFiado').classList.remove('active'); }
+
+        window.onload = function() {
+            cargarClientesFiado();
+            const fecha = document.getElementById('inputFecha');
+            if (fecha) fecha.value = new Date().toISOString().split('T')[0];
+        };
+    </script>
+</body>
+</html>

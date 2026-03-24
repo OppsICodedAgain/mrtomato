@@ -1148,4 +1148,208 @@ function eliminarClienteFiado(id) {
 }
 
 function cerrarModalDetalleFiado() { document.getElementById('modalDetalleFiado').classList.remove('active'); }
+            // ==================== PROMOCIONES ====================
+        function renderListaPromociones() {
+            const container = document.getElementById('listaPromociones');
+            if (!container) return;
+            if (!promociones.length) {
+                container.innerHTML = '<p style="text-align:center;color:#999;padding:2rem;">🎁 No hay promociones</p>';
+                return;
+            }
+            container.innerHTML = promociones.map((p, idx) => {
+                const prod = productos.find(pr => pr.id === p.productoId);
+                const unidad = p.tipo === 'peso' ? 'kg' : 'unidades';
+                return `<div class="producto-card">
+                    <div>
+                        <strong>${prod ? prod.nombre : 'Producto eliminado'}</strong><br>
+                        <small>${p.cantidad} ${unidad} → $${p.precioTotal.toFixed(2)}</small><br>
+                        <small>Equivalente a $${(p.precioTotal / p.cantidad).toFixed(2)}/${unidad}</small>
+                    </div>
+                    <div>
+                        <button class="btn btn-warning" onclick="editarPromo(${idx})" style="padding:0.3rem 0.8rem;">✏️</button>
+                        <button class="btn btn-danger" onclick="eliminarPromo(${idx})" style="padding:0.3rem 0.8rem;">🗑️</button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function abrirModalPromo() {
+            const select = document.getElementById('selectProductoPromo');
+            if (select) {
+                select.innerHTML = '<option value="">-- Seleccionar producto --</option>' +
+                    productos.map(p => `<option value="${p.id}" data-tipo="${p.tipo}">${p.nombre} ($${p.precio.toFixed(2)}${p.tipo === 'peso' ? '/kg' : ''})</option>`).join('');
+                select.onchange = function() {
+                    const tipo = select.options[select.selectedIndex]?.dataset?.tipo;
+                    const labelCant = document.getElementById('cantidadPromoLabel');
+                    const labelPrecio = document.getElementById('precioPromoLabel');
+                    if (tipo === 'peso') {
+                        labelCant.innerText = '📊 Cantidad (kg):';
+                        labelPrecio.innerText = '💰 Precio total para esa cantidad:';
+                    } else {
+                        labelCant.innerText = '📊 Cantidad (unidades):';
+                        labelPrecio.innerText = '💰 Precio total para esa cantidad:';
+                    }
+                };
+                select.onchange();
+            }
+            document.getElementById('promoIdEdit').value = '';
+            document.getElementById('inputPromoCantidad').value = '';
+            document.getElementById('inputPromoPrecio').value = '';
+            document.getElementById('modalPromoTitulo').innerText = '🎁 Agregar Promoción';
+            document.getElementById('modalPromo').classList.add('active');
+        }
+
+        function guardarPromo() {
+            const productoId = document.getElementById('selectProductoPromo').value;
+            const cantidad = parseFloat(document.getElementById('inputPromoCantidad').value);
+            const precioTotal = parseFloat(document.getElementById('inputPromoPrecio').value);
+            const idEdit = document.getElementById('promoIdEdit').value;
+
+            if (!productoId) { alert('❌ Seleccione un producto'); return; }
+            if (isNaN(cantidad) || cantidad <= 0) { alert('❌ Ingrese una cantidad válida'); return; }
+            if (isNaN(precioTotal) || precioTotal <= 0) { alert('❌ Ingrese un precio válido'); return; }
+
+            const producto = productos.find(p => p.id === productoId);
+            if (!producto) { alert('❌ Producto no encontrado'); return; }
+
+            const nuevaPromo = {
+                productoId,
+                productoNombre: producto.nombre,
+                tipo: producto.tipo,
+                cantidad,
+                precioTotal
+            };
+
+            if (idEdit !== '') {
+                const idx = parseInt(idEdit);
+                if (!isNaN(idx) && promociones[idx]) {
+                    promociones[idx] = nuevaPromo;
+                } else {
+                    alert('❌ Índice inválido');
+                    return;
+                }
+            } else {
+                const existe = promociones.findIndex(p => p.productoId === productoId);
+                if (existe !== -1) {
+                    if (confirm('Ya existe una promoción para este producto. ¿Desea actualizarla?')) {
+                        promociones[existe] = nuevaPromo;
+                    } else {
+                        return;
+                    }
+                } else {
+                    promociones.push(nuevaPromo);
+                }
+            }
+
+            guardarDatosLocales();
+            renderListaPromociones();
+            cerrarModalPromo();
+            alert('✅ Promoción guardada');
+        }
+
+        function editarPromo(idx) {
+            const promo = promociones[idx];
+            if (!promo) return;
+            const select = document.getElementById('selectProductoPromo');
+            if (select) {
+                select.value = promo.productoId;
+                select.onchange();
+            }
+            document.getElementById('promoIdEdit').value = idx;
+            document.getElementById('inputPromoCantidad').value = promo.cantidad;
+            document.getElementById('inputPromoPrecio').value = promo.precioTotal;
+            document.getElementById('modalPromoTitulo').innerText = '✏️ Editar Promoción';
+            document.getElementById('modalPromo').classList.add('active');
+        }
+
+        function eliminarPromo(idx) {
+            if (confirm('¿Eliminar esta promoción?')) {
+                promociones.splice(idx, 1);
+                guardarDatosLocales();
+                renderListaPromociones();
+                alert('✅ Promoción eliminada');
+            }
+        }
+
+        function cerrarModalPromo() { document.getElementById('modalPromo').classList.remove('active'); }
+
+        // ==================== HISTORIAL ====================
+        function cargarFiltrosMes() {
+            const meses = new Set();
+            ventas.forEach(v => { if (v?.fecha) { const f = new Date(v.fecha); if (!isNaN(f.getTime())) meses.add(`${f.getFullYear()}-${String(f.getMonth() + 1).padStart(2, '0')}`); } });
+            const sm = document.getElementById('filtroMes');
+            if (sm) { sm.innerHTML = '<option value="all">📅 Todos</option>'; Array.from(meses).sort().reverse().forEach(m => { const [y, mo] = m.split('-'); sm.innerHTML += `<option value="${m}">${new Date(y, mo - 1).toLocaleDateString('es-AR', { month: 'long', year: 'numeric' })}</option>`; }); }
+            const su = document.getElementById('filtroUsuario');
+            if (su) { const us = [...new Set(ventas.map(v => v?.usuario).filter(u => u))]; su.innerHTML = '<option value="all">👥 Todos</option>'; us.forEach(u => su.innerHTML += `<option value="${u}">${u === 'admin' ? 'Admin' : u === 'cajero1' ? 'Cajero 1' : 'Cajero 2'}</option>`); }
+        }
+
+        function renderHistorialVentas() {
+            const mes = document.getElementById('filtroMes')?.value || 'all';
+            const user = document.getElementById('filtroUsuario')?.value || 'all';
+            let filt = [...ventas].reverse().filter(v => v?.fecha);
+            if (mes !== 'all') filt = filt.filter(v => { const f = new Date(v.fecha); return `${f.getFullYear()}-${String(f.getMonth() + 1).padStart(2, '0')}` === mes; });
+            if (user !== 'all') filt = filt.filter(v => v.usuario === user);
+            const cont = document.getElementById('historialVentas');
+            if (!cont) return;
+            if (!filt.length) { cont.innerHTML = '<p style="text-align:center;color:#999;padding:2rem;">📭 No hay ventas</p>'; return; }
+            const total = filt.reduce((s, v) => s + (v.total || 0), 0);
+            const gan = filt.reduce((s, v) => s + (v.gananciaTotal || 0), 0);
+            cont.innerHTML = `<div style="background:#E8F5E9;padding:0.8rem;border-radius:8px;margin-bottom:1rem;"><strong>💰 Total: $${total.toFixed(2)}</strong><br><strong>📈 Ganancia: $${gan.toFixed(2)}</strong><br><small>${filt.length} ventas</small></div>` + filt.map(v => `<div style="background:#F5F5F5;padding:0.8rem;border-radius:8px;margin-bottom:0.5rem;"><div style="display:flex;justify-content:space-between;"><div><strong>📅 ${new Date(v.fecha).toLocaleString()}</strong><br><small>👤 ${v.usuario === 'admin' ? 'Admin' : v.usuario === 'cajero1' ? 'Cajero 1' : 'Cajero 2'} | 💳 ${v.formaPago === 'efectivo' ? 'Efectivo' : v.formaPago === 'tarjeta' ? 'Tarjeta' : 'Transferencia'}</small></div><div><strong style="color:#E53935;">$${(v.total || 0).toFixed(2)}</strong><br><small style="color:#43A047;">Ganancia: $${(v.gananciaTotal || 0).toFixed(2)}</small></div></div><div style="margin-top:0.5rem;font-size:0.8rem;">${(v.items || []).map(i => `📦 ${i.nombre}${i.esMayorista ? '🏷️' : ''}${i.esPromo ? '🎁' : ''}: ${(i.cantidad || 0).toFixed(2)} ${i.tipo === 'peso' ? 'kg' : 'und'} = $${(i.subtotal || 0).toFixed(2)}`).join(' • ')}</div></div>`).join('');
+        }
+
+        // ==================== REPORTES ====================
+        function generarReportePDF(tipo) {
+            let titulo, datos;
+            const hoy = new Date();
+            if (tipo === 'diario') { titulo = `📅 Diario - ${hoy.toLocaleDateString('es-AR')}`; datos = ventas.filter(v => v?.fechaTrabajo === fechaTrabajo); }
+            else if (tipo === 'semanal') { titulo = `📊 Semanal`; const sem = new Date(); sem.setDate(sem.getDate() - 7); datos = ventas.filter(v => v?.fecha && new Date(v.fecha) >= sem); }
+            else { titulo = `📈 Mensual - ${hoy.toLocaleDateString('es-AR', { month: 'long', year: 'numeric' })}`; datos = ventas.filter(v => { if (!v?.fecha) return false; const f = new Date(v.fecha); return f.getMonth() === hoy.getMonth() && f.getFullYear() === hoy.getFullYear(); }); }
+            const total = datos.reduce((s, v) => s + (v.total || 0), 0);
+            const gan = datos.reduce((s, v) => s + (v.gananciaTotal || 0), 0);
+            let html = `<div style="font-family:monospace;padding:1rem;"><div style="text-align:center;"><div style="font-size:2rem;">🍅</div><h2>MR. TOMATO</h2><h3>${titulo}</h3><p>${new Date().toLocaleString()}</p></div><hr><div><strong>💰 Total: $${total.toFixed(2)}</strong></div><div><strong>📈 Ganancia: $${gan.toFixed(2)}</strong></div><div><strong>🛒 Ventas: ${datos.length}</strong></div><hr><h4>Detalle:</h4>`;
+            datos.forEach(v => { html += `<div><strong>${new Date(v.fecha).toLocaleString()}</strong> - ${v.usuario}<br><small>${(v.items || []).map(i => `${i.nombre} x${i.cantidad.toFixed(2)}`).join(', ')}</small><br><strong>$${(v.total || 0).toFixed(2)}</strong></div><hr>`; });
+            html += `<p>¡Gracias!</p></div>`;
+            const w = window.open('', '_blank'); if (w) { w.document.write(html); w.document.close(); w.print(); } else alert('❌ Permita ventanas emergentes');
+        }
+
+        function generarReporteGanancias() {
+            if (!productos.length) { document.getElementById('previsualizacionReporte').innerHTML = '<p>No hay productos</p>'; return; }
+            const prods = productos.map(p => ({ nombre: p.nombre, tipo: p.tipo, venta: p.precio, costo: p.costo || 0, ganancia: p.precio - (p.costo || 0), margen: p.costo ? ((p.precio - p.costo) / p.costo * 100).toFixed(1) : 0, stock: p.stock, valorStock: p.stock * (p.costo || 0) })).sort((a,b) => b.ganancia - a.ganancia);
+            const totalStock = prods.reduce((s, p) => s + p.valorStock, 0);
+            document.getElementById('previsualizacionReporte').innerHTML = `<h3>💰 Ganancias</h3><table border="1" cellpadding="5" style="width:100%"><tr style="background:#E53935;color:white;"><th>Producto</th><th>Venta</th><th>Costo</th><th>Ganancia</th><th>Margen</th><th>Stock</th><th>Valor</th>     </tr>${prods.map(p => `     <tr><td>${p.nombre}</td><td>$${p.venta.toFixed(2)}</td><td>$${p.costo.toFixed(2)}</td><td>$${p.ganancia.toFixed(2)}</td><td>${p.margen}%</td><td>${p.stock.toFixed(2)}</td><td>$${p.valorStock.toFixed(2)}</td></tr>`).join('')}</table><p>💰 Inversión: $${totalStock.toFixed(2)}</p>`;
+            alert('✅ Reporte listo');
+        }
+
+        // ==================== PROVEEDORES ====================
+        function renderListaProveedores() {
+            const c = document.getElementById('listaProveedores');
+            if (!c) return;
+            if (!proveedores.length) { c.innerHTML = '<p style="text-align:center;color:#999;padding:2rem;">🏭 No hay proveedores</p>'; return; }
+            c.innerHTML = proveedores.map(p => `<div class="producto-card"><div><strong>🏭 ${escapeHtml(p.nombre)}</strong><br><small>📞 ${p.telefono || '-'} | 📍 ${p.direccion || '-'}<br>📝 ${p.notas || '-'}</small></div><button class="btn btn-danger" onclick="eliminarProveedor('${p.id}')">🗑️</button></div>`).join('');
+        }
+
+        function guardarProveedor() { const n = document.getElementById('inputProveedorNombre')?.value.trim(); if (!n) { alert('❌ Ingrese nombre'); return; } proveedores.push({ id: Date.now().toString(), nombre: n, telefono: document.getElementById('inputProveedorTelefono')?.value || '', direccion: document.getElementById('inputProveedorDireccion')?.value || '', notas: document.getElementById('inputProveedorNotas')?.value || '' }); guardarDatosLocales(); renderListaProveedores(); cerrarModalProveedor(); alert('✅ Proveedor agregado'); }
+        function eliminarProveedor(id) { if (confirm('¿Eliminar?')) { proveedores = proveedores.filter(p => p.id !== id); guardarDatosLocales(); renderListaProveedores(); } }
+        function abrirModalProveedor() { document.getElementById('modalProveedor').classList.add('active'); }
+        function cerrarModalProveedor() { document.getElementById('modalProveedor').classList.remove('active'); }
+
+        // ==================== CAJA ====================
+        function abrirCaja() { document.getElementById('infoCaja').innerHTML = cajaActual ? `✅ Caja ABIERTA<br>📅 ${new Date(cajaActual.apertura).toLocaleString()}<br>💰 Inicial: $${(cajaActual.montoInicial || 0).toFixed(2)}<br>💵 Actual: $${(cajaActual.montoActual || 0).toFixed(2)}` : '🔴 Caja CERRADA'; document.getElementById('modalCaja').classList.add('active'); }
+        function aperturarCaja() { const m = parseFloat(document.getElementById('inputMontoInicial').value); if (isNaN(m) || m < 0) { alert('❌ Monto inválido'); return; } cajaActual = { apertura: new Date().toISOString(), montoInicial: m, montoActual: m, movimientos: [] }; guardarDatosLocales(); alert(`✅ Caja abierta con $${m.toFixed(2)}`); cerrarModalCaja(); actualizarDashboard(); }
+        function cerrarCaja() { if (!cajaActual) { alert('No hay caja'); return; } const ventasEf = ventas.filter(v => v && v.fechaTrabajo === fechaTrabajo && v.formaPago === 'efectivo'); const totalEf = ventasEf.reduce((s, v) => s + (v.total || 0), 0); const esp = (cajaActual.montoInicial || 0) + totalEf; if (confirm(`💰 CIERRE\nInicial: $${(cajaActual.montoInicial || 0).toFixed(2)}\nVentas efectivo: $${totalEf.toFixed(2)}\nEsperado: $${esp.toFixed(2)}\nActual: $${(cajaActual.montoActual || 0).toFixed(2)}\nDiferencia: $${((cajaActual.montoActual || 0) - esp).toFixed(2)}\n¿Cerrar?`)) { cierres.push({ fecha: fechaTrabajo, usuario: usuarioActual, ventas: ventasEf.length, total: totalEf }); cajaActual = null; guardarDatosLocales(); alert('✅ Caja cerrada'); cerrarModalCaja(); actualizarDashboard(); } }
+        function cerrarModalCaja() { document.getElementById('modalCaja').classList.remove('active'); document.getElementById('inputMontoInicial').value = ''; }
+
+        // ==================== TICKET ====================
+        function configurarTicketOpcional() { const op = confirm('🖨️ TICKET\n"OK" = Automático\n"Cancelar" = Manual'); ticketAutomatico = !op; localStorage.setItem('ticket_automatico', ticketAutomatico); alert(ticketAutomatico ? '✅ Modo MANUAL' : '✅ Modo AUTOMÁTICO'); }
+        function imprimirTicket(v = null) { let ven = v; if (!ven) { if (!ventas.length) { alert('No hay venta'); return; } ven = ventas[ventas.length - 1]; } let html = `<div style="font-family:monospace;text-align:center;padding:1rem;"><div>🍅 MR. TOMATO</div><div>${new Date(ven.fecha).toLocaleString()}</div><hr><table style="width:100%">`; ven.items.forEach(i => { html += `     <tr><td>${i.nombre}${i.esMayorista ? '🏷️' : ''}${i.esPromo ? '🎁' : ''}</td><td>${i.cantidad.toFixed(2)} ${i.tipo === 'peso' ? 'kg' : ''}</td><td style="text-align:right;">$${i.subtotal.toFixed(2)}</td></tr>`; }); html += `</table><hr><div><strong>TOTAL: $${ven.total.toFixed(2)}</strong></div><div>Pago: ${ven.formaPago === 'efectivo' ? 'Efectivo' : ven.formaPago === 'tarjeta' ? 'Tarjeta' : 'Transferencia'}</div>${ven.vuelto > 0 ? `<div>Vuelto: $${ven.vuelto.toFixed(2)}</div>` : ''}<hr><div>¡Gracias!</div></div>`; const w = window.open('', '_blank'); if (w) { w.document.write(html); w.document.close(); w.print(); } }
+
+        // ==================== WINDOW ONLOAD ====================
+        window.onload = function() {
+            cargarClientesFiado();
+            const fecha = document.getElementById('inputFecha');
+            if (fecha) fecha.value = new Date().toISOString().split('T')[0];
+        };
+    </script>
+</body>
+</html>
     

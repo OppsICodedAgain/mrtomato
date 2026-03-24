@@ -1069,5 +1069,83 @@ function cerrarModalCosto() { document.getElementById('modalCosto').classList.re
             }).join('');
         }
 
-        func
+        function verDetalleFiado(id) {
+    const cl = clientesFiado.find(c => c.id === id);
+    if (!cl) return;
+    const deuda = cl.deudas.reduce((s, d) => s + (d.monto - (d.pagado || 0)), 0);
+    let html = `<h4>📒 ${escapeHtml(cl.nombre)}</h4><p>📞 ${cl.telefono || '-'} | 📍 ${cl.direccion || '-'}</p><p>💰 Límite: $${cl.limiteMensual.toFixed(2)} | 💸 Deuda: $${deuda.toFixed(2)}</p><hr><h5>Deudas:</h5>`;
+    const pendientes = cl.deudas.filter(d => (d.monto - (d.pagado || 0)) > 0);
+    if (!pendientes.length) html += '<p>✅ Sin deudas</p>';
+    else {
+        html += `<table style="width:100%"><tr style="background:#E53935;color:white;"><th>Fecha</th><th>Monto</th><th>Pagado</th><th>Saldo</th>   </tr>`;
+        pendientes.forEach(d => {
+            const saldo = d.monto - (d.pagado || 0);
+            html += `   <tr><td>${new Date(d.fecha).toLocaleDateString()}</td><td>$${d.monto.toFixed(2)}</td><td>$${(d.pagado || 0).toFixed(2)}</td><td style="color:#E53935;">$${saldo.toFixed(2)}</td></tr>`;
+        });
+        html += `</table>`;
+    }
+    html += `<hr><h5>Pagos:</h5>`;
+    const pagos = cl.deudas.flatMap(d => d.pagos || []);
+    if (!pagos.length) html += '<p>Sin pagos</p>';
+    else {
+        html += `<ul>`;
+        pagos.slice().reverse().forEach(p => {
+            html += `<li>${new Date(p.fecha).toLocaleDateString()} - Pagó $${p.monto.toFixed(2)} (${p.usuario})</li>`;
+        });
+        html += `</ul>`;
+    }
+    document.getElementById('detalleFiadoContent').innerHTML = html;
+    document.getElementById('modalDetalleFiado').classList.add('active');
+}
+
+function registrarPagoFiado(id) {
+    const cl = clientesFiado.find(c => c.id === id);
+    if (!cl) return;
+    const totalDeuda = cl.deudas.reduce((s, d) => s + (d.monto - (d.pagado || 0)), 0);
+    if (totalDeuda <= 0) { alert('✅ Sin deudas'); return; }
+    const monto = parseFloat(prompt(`💰 PAGO\nCliente: ${cl.nombre}\nDeuda: $${totalDeuda.toFixed(2)}\n¿Cuánto paga?`, totalDeuda.toFixed(2)));
+    if (isNaN(monto) || monto <= 0) { alert('❌ Monto inválido'); return; }
+    if (monto > totalDeuda) { alert(`❌ Máximo $${totalDeuda.toFixed(2)}`); return; }
+    let resto = monto;
+    for (const d of cl.deudas) {
+        if (resto <= 0) break;
+        const saldo = d.monto - (d.pagado || 0);
+        if (saldo > 0) {
+            const aplicado = Math.min(resto, saldo);
+            d.pagado = (d.pagado || 0) + aplicado;
+            d.pagos = d.pagos || [];
+            d.pagos.push({ fecha: new Date().toISOString(), monto: aplicado, usuario: usuarioActual });
+            resto -= aplicado;
+        }
+    }
+    guardarClientesFiado();
+    renderListaClientesFiado();
+    alert(`✅ Pago de $${monto.toFixed(2)} registrado`);
+}
+
+function agregarDeudaFiado(id) {
+    const cl = clientesFiado.find(c => c.id === id);
+    if (!cl) return;
+    const deudaActual = cl.deudas.reduce((s, d) => s + (d.monto - (d.pagado || 0)), 0);
+    const disponible = cl.limiteMensual - deudaActual;
+    if (disponible <= 0) { alert(`❌ Límite alcanzado`); return; }
+    const monto = parseFloat(prompt(`📒 NUEVO FIADO\nCliente: ${cl.nombre}\nDisponible: $${disponible.toFixed(2)}\nMonto:`));
+    if (isNaN(monto) || monto <= 0) { alert('❌ Monto inválido'); return; }
+    if (monto > disponible) { alert(`❌ Supera límite ($${disponible.toFixed(2)})`); return; }
+    cl.deudas.push({ id: Date.now().toString(), fecha: new Date().toISOString(), monto, pagado: 0, fechaVencimiento: null, pagos: [], usuario: usuarioActual });
+    guardarClientesFiado();
+    renderListaClientesFiado();
+    alert(`✅ Fiado de $${monto.toFixed(2)} agregado`);
+}
+
+function eliminarClienteFiado(id) {
+    if (confirm('¿Eliminar cliente y todo su historial?')) {
+        clientesFiado = clientesFiado.filter(c => c.id !== id);
+        guardarClientesFiado();
+        renderListaClientesFiado();
+        alert('✅ Cliente eliminado');
+    }
+}
+
+function cerrarModalDetalleFiado() { document.getElementById('modalDetalleFiado').classList.remove('active'); }
     
